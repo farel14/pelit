@@ -2,13 +2,13 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Provider } from 'react-redux'
 import store from "./store";
-import Login from './screens/Login.js'
-import Register from './screens/Register.js'
-import Home from './screens/Home.js'
-import AddExpense from './screens/AddExpense.js'
-import EditExpense from './screens/EditExpense.js'
-import MyProfile from './screens/MyProfile.js'
-import ExpenseReport from './screens/myProfile.js'
+import Login from './screens/Login.jsx'
+import Register from './screens/Register.jsx'
+import Home from './screens/Home.jsx'
+import AddExpense from './screens/AddExpense.jsx'
+import EditExpense from './screens/EditExpense.jsx'
+import MyProfile from './screens/MyProfile.jsx'
+import ExpenseReport from './screens/MyProfile.jsx'
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
