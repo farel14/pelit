@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test":  "jest --detectOpenHandles --forceExit"
+    "test":  "jest --detectOpenHandles --forceExit",
+    "dev": "nodemon bin/http"
   },
   "keywords": [],
   "author": "",
@@ -22,5 +23,6 @@
     "jest": "^27.0.6",
     "sequelize-cli": "^6.2.0",
     "supertest": "^6.1.4"
+    "faker": "^5.5.3"
   }
 }
