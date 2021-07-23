@@ -1,9 +1,10 @@
 const { Transaction, History, User } = require('../models')
+const sequelize = require('sequelize');
 
 class TransactionController {
     static async getAll(req, res) {
-        const { category, date, type } = req.query
-        const { month, year } = +req.query
+        const { category, type } = req.query
+        const { date, month, year } = +req.query
         // ? month Number & year Number
         try {
             const data = await Transaction.findAll({
@@ -14,6 +15,45 @@ class TransactionController {
             console.error(error)
         }
     }
+
+    static getByCategory(req, res) {
+        let monthNum = req.params.month
+        Transaction.findAll({
+            attributes: [
+                'category',
+                [sequelize.fn('sum', sequelize.col('amount')), 'amount']
+            ],
+            group: ['category']
+        })
+        .then(trans => {
+            res.status(200).json(trans)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+    }
+
+    static getByDate(req, res) {
+        let monthNum = +req.params.month
+        Transaction.findAll({
+            where: {
+                month: monthNum
+            },
+            attributes: [
+                'date',
+                [sequelize.fn('sum', sequelize.col('amount')), 'amount']
+            ],
+            group: ['date']
+        })
+        .then(trans => {
+            console.log(monthNum)
+            res.status(200).json(trans)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
+    }
+
     static async postOne(req, res) {
         const { UserId, type, fullDate, date, receiptImage, category, notes } = req.body
         const { amount, month, year } = +req.body
@@ -42,7 +82,7 @@ class TransactionController {
     }
     static async putOne(req, res) {
         const { transactionId } = +req.params
-        const { type, amount, fullDate, date, month, year, receiptImage, category, notes } = req.body
+        const { type, fullDate, receiptImage, category, notes } = req.body
         const { amount, date, month, year } = +req.body
         try {
             const oldTransaction = await Transaction.findOne(transactionId)

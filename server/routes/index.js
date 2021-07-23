@@ -10,7 +10,7 @@ let achievement = require('./achievement')
 
 // router.use('/', home);
 // router.use('/user', user);
-// router.use('/transactions', transactions);
+router.use('/transactions', transactions);
 router.use('/target', target);
 // router.use('/badge', badge);
 // router.use('/achievement', achievement)
