@@ -1,6 +1,6 @@
-const { User } = require("../pelit/server/models");
-const { comparePassword } = require("../pelit/server/helpers/passwordBcrypt");
-const { generateJWT } = require("../pelit/server/helpers/jsonWebToken");
+const { User } = require("../models");
+const { comparePassword } = require("../helpers/passwordBcrypt");
+const { generateJWT } = require("../helpers/jsonWebToken");
 
 class LoginController {
   static loginPost(req, res, next) {
