@@ -33,30 +33,37 @@ class TransactionController {
       });
   }
 
-  static getByCategory(req, res) {
+  static getByType(req, res) {
     let userId = +req.params.UserId;
-    let monthNum = +req.body.month;
+    let type = req.params.type
+    let month = +req.body.month;
 
     Transaction.findAll({
       where: {
-        month: monthNum,
         UserId: userId,
+        month: month,
+        type: type
       },
-      attributes: [
-        "category",
-        [sequelize.fn("sum", sequelize.col("amount")), "amount"],
-      ],
-      group: ["category"],
     })
       .then((data) => {
-        res.status(200).json(data);
+            data.forEach(ele => {
+                ele.type === 'Expense' ? ele.amount *= -1 : null
+                return ele
+            })
+
+        let total = 0
+        for (let i = 0; i < data.length; i++) {
+            total += data[i].amount
+        }
+
+        res.status(200).json({total, data});
       })
       .catch((err) => {
         res.status(500).json({ message: err });
       });
   }
 
-  static getByDate(req, res) {
+  static getAllGroupedByCategory(req, res) {
     let userId = +req.params.UserId;
     let monthNum = +req.body.month;
 
@@ -65,14 +72,126 @@ class TransactionController {
         month: monthNum,
         UserId: userId,
       },
-      attributes: [
-        "date",
-        [sequelize.fn("sum", sequelize.col("amount")), "amount"],
-      ],
-      group: ["date"],
+      order: ['category']
     })
       .then((data) => {
-        res.status(200).json(data);
+        let group = []
+        let flag = true
+        data.forEach(ele => {
+            ele.type === 'Expense' ? ele.amount *= -1 : null
+            if (group.length > 0) {
+                for (let i = 0; i < group.length; i++) {
+                    if (group[i].category == ele.category) {
+                        flag = true
+                        group[i].total += ele.amount
+                        group[i].items.push({
+                            id: ele.id,
+                            title: ele.title,
+                            nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
+                            type: ele.type,
+                            title: ele.title,
+                            amount: ele.amount,
+                            date: ele.date,
+                            month: ele.month,
+                            year: ele.year,
+                            fullDate: ele.fullDate
+                        })
+                    } else {
+                        flag = false
+                    }        
+                }    
+            } else {
+                flag = false
+            }
+
+            if (flag == false) {
+                group.push({
+                    category: ele.category,
+                    total: ele.amount,
+                    items: [{
+                        id: ele.id,
+                        title: ele.title,
+                        nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
+                        type: ele.type,
+                        title: ele.title,
+                        amount: ele.amount,
+                        date: ele.date,
+                        month: ele.month,
+                        year: ele.year,
+                        fullDate: ele.fullDate
+                    }]
+                })
+            }
+            return ele
+        })
+        res.status(200).json(group);
+      })
+      .catch((err) => {
+        res.status(500).json({ message: err });
+      });
+  }
+
+  static getAllGroupedByDate(req, res) {
+    let userId = +req.params.UserId;
+    let monthNum = +req.body.month;
+
+    Transaction.findAll({
+      where: {
+        month: monthNum,
+        UserId: userId,
+      },
+      order: [['date', 'DESC']]
+    })
+      .then((data) => {
+        let group = []
+        let flag = true
+        data.forEach(ele => {
+            ele.type === 'Expense' ? ele.amount *= -1 : null
+            if (group.length > 0) {
+                for (let i = 0; i < group.length; i++) {
+                    if (group[i].date == ele.date) {
+                        flag = true
+                        group[i].total += ele.amount
+                        group[i].items.push({
+                            id: ele.id,
+                            title: ele.title,
+                            category: ele.category,
+                            type: ele.type,
+                            title: ele.title,
+                            amount: ele.amount,
+                            month: ele.month,
+                            year: ele.year,
+                            fullDate: ele.fullDate
+                        })
+                    } else {
+                        flag = false
+                    }        
+                }    
+            } else {
+                flag = false
+            }
+
+            if (flag == false) {
+                group.push({
+                    date: ele.date,
+                    nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
+                    total: ele.amount,
+                    items: [{
+                        id: ele.id,
+                        title: ele.title,
+                        category: ele.category,
+                        type: ele.type,
+                        title: ele.title,
+                        amount: ele.amount,
+                        month: ele.month,
+                        year: ele.year,
+                        fullDate: ele.fullDate
+                    }]
+                })
+            }
+            return ele
+        })
+        res.status(200).json(group);
       })
       .catch((err) => {
         res.status(500).json({ message: err });
@@ -95,23 +214,62 @@ class TransactionController {
       },
     })
       .then((data) => {
-        allTransactions = [...data];
-        return Transaction.findAll({
-          attributes: [
-            [sequelize.fn("sum", sequelize.col("amount")), "amount"],
-          ],
-          where: {
-            UserId: userId,
-            fullDate: {
-              [Op.between]: [startDate, endDate],
-            },
-          },
-        });
+        allTransactions = [...data]
+            allTransactions.forEach(ele => {
+                ele.type === 'Expense' ? ele.amount *= -1 : null
+                return ele
+            })
+
+            let output = 0
+            console.log(allTransactions.length)
+            for (let i = 0; i < allTransactions.length; i++) {
+                console.log(allTransactions[i].amount)
+                output += allTransactions[i].amount
+            }
+
+            res
+            .status(200)
+            .json({ total: output, data: allTransactions });
       })
-      .then((output) => {
-        res
-          .status(200)
-          .json({ total: output[0].amount, data: allTransactions });
+      .catch((err) => {
+        res.status(500).json({ message: err });
+      });
+  }
+
+  static getBetweenTwoDatesByType(req, res) {
+    let startDate = req.body.startDate;
+    let endDate = req.body.endDate;
+    let userId = +req.params.UserId;
+    let type = req.params.type
+
+    let allTransactions;
+
+    Transaction.findAll({
+      where: {
+        UserId: userId,
+        type: type,
+        fullDate: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
+    })
+      .then((data) => {
+        allTransactions = [...data]
+            allTransactions.forEach(ele => {
+                ele.type === 'Expense' ? ele.amount *= -1 : null
+                return ele
+            })
+
+            let output = 0
+            console.log(allTransactions.length)
+            for (let i = 0; i < allTransactions.length; i++) {
+                console.log(allTransactions[i].amount)
+                output += allTransactions[i].amount
+            }
+
+            res
+            .status(200)
+            .json({ total: output, data: allTransactions });
       })
       .catch((err) => {
         res.status(500).json({ message: err });

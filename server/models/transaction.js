@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Transaction.init({
+    title: DataTypes.STRING,
     UserId: DataTypes.INTEGER,
     type: DataTypes.STRING,
     category: DataTypes.STRING,
