@@ -41,11 +41,11 @@ beforeAll(done => {
         return Target.bulkCreate(targets)
     })
     .then(allTargets => {
-        console.log('SUCCESS CREATING TARGETS')
+        // console.log('SUCCESS CREATING TARGETS')
         done()
     })
     .catch(err => {
-        console.log('ERRRRRORRR CREATE USER')
+        // console.log('ERRRRRORRR CREATE USER')
         done(err)
     })
 })
@@ -53,7 +53,7 @@ beforeAll(done => {
 afterAll(done => {
     User.destroy({ truncate: true, cascade: true})
     .then(() => {
-        console.log('destroyed')
+        // console.log('destroyed')
         return Target.destroy({truncate: true, cascade: true})
     })
     .then(() => {
@@ -73,6 +73,7 @@ describe('Get Target - SUCCESS', () => {
             if (err) {
                 done(err)
             } else {
+                // console.log(res.body[0])
                 expect(res.status).toBe(200)
                 expect(res.body.length).toEqual(targets.length)
                 for (let i = 0; i < res.body.length; i++) {
