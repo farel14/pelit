@@ -13,10 +13,12 @@
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "init": "^0.1.2",
     "pg": "^8.6.0",
     "sequelize": "^6.6.5"
   },
   "devDependencies": {
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "sequelize-cli": "^6.2.0"
   }
 }
