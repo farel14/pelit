@@ -1,6 +1,10 @@
-const express = require('express')
-const Transaction = require('../controllers/transactions')
-const router = express.Router()
+const express = require("express");
+const Transaction = require("../controllers/transactions");
+const router = express.Router();
+const imageKit = require("../middlewares/imageKit");
+
+const multer = require("multer");
+const upload = multer();
 
 router.get('/', Transaction.getAll)
 
@@ -17,8 +21,13 @@ router.get('/:UserId/:type', Transaction.getByType) // by income / by expense fo
 router.get('/:UserId', Transaction.getAllByUserId)
 
 // for add/edit/delete
-router.post('/:UserId', Transaction.postOne)
-router.put('/:TransactionId', Transaction.putOne)
-router.delete('/:TransactionId', Transaction.deleteOne)
+router.post(
+  "/:UserId",
+  upload.single("receiptImage"),
+  imageKit,
+  Transaction.postOne
+);
+router.put("/:TransactionId", Transaction.putOne);
+router.delete("/:TransactionId", Transaction.deleteOne);
 
-module.exports = router
+module.exports = router;
