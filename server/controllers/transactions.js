@@ -12,8 +12,8 @@ class TransactionController {
                 where: { category, date, month, year, type }
             })
             res.status(200).json(data)
-        } catch (error) {
-            res.status(500).json({message: err})
+        } catch (err) {
+            res.status(500).json({ message: err })
         }
     }
 
@@ -25,12 +25,12 @@ class TransactionController {
                 UserId: userId
             }
         })
-        .then(data => {
-            res.status(200).json(data)
-        })
-        .catch(err => {
-            res.status(500).json({message: err})
-        })
+            .then(data => {
+                res.status(200).json(data)
+            })
+            .catch(err => {
+                res.status(500).json({ message: err })
+            })
     }
 
     static getByCategory(req, res) {
@@ -44,39 +44,62 @@ class TransactionController {
             },
             attributes: [
                 'category',
-                [sequelize.fn('sum', sequelize.col('amount')), 'amount']
+                // [sequelize.fn('sum', sequelize.col('amount')), 'amount']
+                [sequelize.fn('sum', sequelize.col('amount')), 'amount', 'type']
             ],
             group: ['category']
         })
-        .then(data => {
-            res.status(200).json(data)
-        })
-        .catch(err => {
-            res.status(500).json({message: err})
-        })
+            .then(data => {
+                res.status(200).json(data.map)
+            })
+            .catch(err => {
+                res.status(500).json({ message: err })
+            })
     }
 
     static getByDate(req, res) {
         let userId = +req.params.UserId
         let monthNum = +req.body.month
 
+        // const expenseChoices = ['Housing', 'Transportation', 'Food & Beverage', 'Utilities', 'Insurance', 'Medical & Healthcare', 'Saving, Investing, & Debt Payments', 'Personal Spending', 'Other Expense']
+        // const incomeChoices = ['Salary', 'Wages', 'Commission', 'Interest', 'Investments', 'Gifts', 'Allowance', 'Other Income']
+
         Transaction.findAll({
             where: {
                 month: monthNum,
                 UserId: userId
             },
-            attributes: [
-                'date',
-                [sequelize.fn('sum', sequelize.col('amount')), 'amount']
-            ],
-            group: ['date']
+            // attributes: [
+            //     'date',
+            //     [sequelize.fn('sum', sequelize.col('amount')), 'amount']
+            // ],
+            // group: ['date']
         })
-        .then(data => {
-            res.status(200).json(data)
-        })
-        .catch(err => {
-            res.status(500).json({message: err})
-        })
+            .then(data => {
+                let groupByDate = {}
+                data.forEach(ele => {
+                    // expenseChoices.indexOf(ele.type) >= 0 ? ele.amount = -ele.amount : ele.amount
+                    ele.type === 'Expense' ? ele.amount *= -1 : null
+                    if (!groupByDate[ele.date]) {
+                        groupByDate[ele.date] = [{
+                            category: ele.category,
+                            amount: ele.amount
+                        }]
+                    } else {
+                        groupByDate[ele.date].push({
+                            category: ele.category,
+                            amount: ele.amount
+                        })
+                    }
+                    // console.log(groupByDate)
+                    return ele
+                })
+
+                res.status(200).json(groupByDate)
+            })
+            .catch(err => {
+                res.status(500).json({ message: err })
+            })
     }
 
     static getBetweenTwoDates(req, res) {
@@ -94,26 +117,26 @@ class TransactionController {
                 }
             }
         })
-        .then(data => {
-            allTransactions = [...data]
-            return Transaction.findAll({
-                attributes: [
-                    [sequelize.fn('sum', sequelize.col('amount')), 'amount']
-                ],
-                where: {
-                    UserId: userId,
-                    fullDate: {
-                        [Op.between]: [startDate, endDate]
+            .then(data => {
+                allTransactions = [...data]
+                return Transaction.findAll({
+                    attributes: [
+                        [sequelize.fn('sum', sequelize.col('amount')), 'amount']
+                    ],
+                    where: {
+                        UserId: userId,
+                        fullDate: {
+                            [Op.between]: [startDate, endDate]
+                        }
                     }
-                }
+                })
             })
-        })
-        .then(output => {
-            res.status(200).json({total: output[0].amount, data: allTransactions})
-        })
-        .catch(err => {
-            res.status(500).json({message: err})
-        })
+            .then(output => {
+                res.status(200).json({ total: output[0].amount, data: allTransactions })
+            })
+            .catch(err => {
+                res.status(500).json({ message: err })
+            })
     }
 
     static async postOne(req, res) {
