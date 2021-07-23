@@ -14,6 +14,18 @@ class TransactionController {
             console.error(error)
         }
     }
+    static async getById(req, res) {
+        const { UserId } = req.params
+        try {
+            const userData = await User.findOne(UserId)
+            if (!userData) return res.status(400).json({ message: 'User not found' })
+            res.status(200).json(userData)
+        } catch (error) {
+            console.error(error)
+            res.status(500).json({ message: error })
+        }
+
+    }
     static async postOne(req, res) {
         const { UserId, type, fullDate, date, receiptImage, category, notes } = req.body
         const { amount, month, year } = +req.body
@@ -37,15 +49,15 @@ class TransactionController {
 
         } catch (error) {
             console.error(error)
-            res.status(500).json({ status: 'failed' })
+            res.status(500).json({ message: error })
         }
     }
     static async putOne(req, res) {
-        const { transactionId } = +req.params
+        const { TransactionId } = +req.params
         const { type, amount, fullDate, date, month, year, receiptImage, category, notes } = req.body
         const { amount, date, month, year } = +req.body
         try {
-            const oldTransaction = await Transaction.findOne(transactionId)
+            const oldTransaction = await Transaction.findOne(TransactionId)
             if (!oldTransaction) return res.status(400).json({ message: 'Transaction not found' })
 
             if (amount) {
@@ -53,30 +65,30 @@ class TransactionController {
                 const UserId = oldTransaction.UserId
                 const userInstance = await User.findOne(UserId)
                 userInstance.balance = userInstance.balance - Number(oldTransaction.amount) + amount
-            } 
+            }
 
             Transaction.update({
                 type, fullDate, date, month, year, receiptImage, category, notes
             }, {
                 where: {
-                    id: transactionId
+                    id: TransactionId
                 }
             })
 
             await userInstance.save()
-            await History.create({ event: `A transaction with id ${transactionId} has been updated and user ${UserId} balance has been updated` })
-            res.status(200).json({status: 'success'})
+            await History.create({ event: `A transaction with id ${TransactionId} has been updated and user ${UserId} balance has been updated` })
+            res.status(200).json({ status: 'success' })
 
         } catch (error) {
             console.error(error)
-            res.status(500).json({ status: 'failed' })
+            res.status(500).json({ message: error })
         }
 
     }
     static async deleteOne(req, res) {
-        const { transactionId } = +req.params
+        const { TransactionId } = +req.params
         try {
-            const transactionInstance = await Transaction.findOne(transactionId)
+            const transactionInstance = await Transaction.findOne(TransactionId)
             if (!transactionInstance) return res.status(400).json({ message: 'Transaction not found' })
             const UserId = transactionInstance.UserId
 
@@ -84,15 +96,15 @@ class TransactionController {
             const userInstance = await User.findOne(UserId)
             userInstance.balance += Number(transactionInstance.amount)
             userInstance.save()
-            
+
             // ? deleting transaction
             transactionInstance.destroy()
 
-            await History.create({ event: `A transaction with id ${transactionId} has been deleted` })
+            await History.create({ event: `A transaction with id ${TransactionId} has been deleted` })
             res.status(200).json({ status: 'success' })
         } catch (error) {
             console.error(error)
-            res.status(500).json({ status: 'failed' })
+            res.status(500).json({ message: error })
         }
     }
 }

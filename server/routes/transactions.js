@@ -4,8 +4,9 @@ const router = express.Router()
 
 router.get('/', Transaction.getAll)
 router.post('/', Transaction.postOne)
-router.put('/:transactionId', Transaction.putOne)
-router.delete('/:transactionId', Transaction.deleteOne)
+router.get('/:UserId', Transaction.getById)
+router.put('/:TransactionId', Transaction.putOne)
+router.delete('/:TransactionId', Transaction.deleteOne)
 
 
 module.exports = router
