@@ -17,7 +17,6 @@ class LoginController {
               id: user.id,
               email: user.id,
             });
-            console.log(user);
             res.status(200).json({
               access_token,
               data: {
@@ -28,15 +27,15 @@ class LoginController {
               },
             });
           } else {
-            next({ statusCode: 401, message: "Wrong Email/Password" });
+            res.status(401).json({ message: "Wrong Email/Password" });
           }
         } else {
-          next({ statusCode: 401, message: "Wrong Email/Password" });
+          res.status(401).json({ message: "Wrong Email/Password" });
         }
       })
       .catch((err) => {
         console.log(err);
-        next({ statusCode: 500 });
+        res.status(500).json({ message: "Internal Server Error" });
       });
   }
 }
