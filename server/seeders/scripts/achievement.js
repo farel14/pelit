@@ -10,7 +10,7 @@ for (let i = 0; i < 10; i++) {
     achievement.UserId = faker.datatype.number(9)+1
     achievement.BadgeId = faker.datatype.number(4)+1
     achievement.date = randomDate.getDate()
-    achievement.month = randomDate.getMonth()
+    achievement.month = randomDate.getMonth() + 1
     achievement.year = randomDate.getFullYear()
     achievements.push(achievement)
 }
