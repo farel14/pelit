@@ -1,9 +1,11 @@
 const { Transaction, History, User } = require('../models')
+const sequelize = require('sequelize');
+const Op = sequelize.Op;
 
 class TransactionController {
     static async getAll(req, res) {
-        const { category, date, type } = req.query
-        const { month, year } = +req.query
+        const { category, type } = req.query
+        const { date, month, year } = +req.query
         // ? month Number & year Number
         try {
             const data = await Transaction.findAll({
@@ -11,23 +13,112 @@ class TransactionController {
             })
             res.status(200).json(data)
         } catch (error) {
-            console.error(error)
+            res.status(500).json({message: err})
         }
     }
-    static async getById(req, res) {
-        const { UserId } = req.params
-        try {
-            const userData = await User.findOne(UserId)
-            if (!userData) return res.status(400).json({ message: 'User not found' })
-            res.status(200).json(userData)
-        } catch (error) {
-            console.error(error)
-            res.status(500).json({ message: error })
-        }
 
+    static getAllByUserId(req, res) {
+        let userId = +req.params.UserId
+
+        Transaction.findAll({
+            where: {
+                UserId: userId
+            }
+        })
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            res.status(500).json({message: err})
+        })
     }
+
+    static getByCategory(req, res) {
+        let userId = +req.params.UserId
+        let monthNum = +req.body.month
+
+        Transaction.findAll({
+            where: {
+                month: monthNum,
+                UserId: userId
+            },
+            attributes: [
+                'category',
+                [sequelize.fn('sum', sequelize.col('amount')), 'amount']
+            ],
+            group: ['category']
+        })
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            res.status(500).json({message: err})
+        })
+    }
+
+    static getByDate(req, res) {
+        let userId = +req.params.UserId
+        let monthNum = +req.body.month
+
+        Transaction.findAll({
+            where: {
+                month: monthNum,
+                UserId: userId
+            },
+            attributes: [
+                'date',
+                [sequelize.fn('sum', sequelize.col('amount')), 'amount']
+            ],
+            group: ['date']
+        })
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            res.status(500).json({message: err})
+        })
+    }
+
+    static getBetweenTwoDates(req, res) {
+        let startDate = req.body.startDate
+        let endDate = req.body.endDate
+        let userId = +req.params.UserId
+
+        let allTransactions;
+
+        Transaction.findAll({
+            where: {
+                UserId: userId,
+                fullDate: {
+                    [Op.between]: [startDate, endDate]
+                }
+            }
+        })
+        .then(data => {
+            allTransactions = [...data]
+            return Transaction.findAll({
+                attributes: [
+                    [sequelize.fn('sum', sequelize.col('amount')), 'amount']
+                ],
+                where: {
+                    UserId: userId,
+                    fullDate: {
+                        [Op.between]: [startDate, endDate]
+                    }
+                }
+            })
+        })
+        .then(output => {
+            res.status(200).json({total: output[0].amount, data: allTransactions})
+        })
+        .catch(err => {
+            res.status(500).json({message: err})
+        })
+    }
+
     static async postOne(req, res) {
-        const { UserId, type, fullDate, date, receiptImage, category, notes } = req.body
+        let UserId = req.params.UserId
+        const { type, fullDate, date, receiptImage, category, notes } = req.body
         const { amount, month, year } = +req.body
         // ? month Number & year Number
         // ! amount positive -budget, amount negative +budget
@@ -54,7 +145,7 @@ class TransactionController {
     }
     static async putOne(req, res) {
         const { TransactionId } = +req.params
-        const { type, amount, fullDate, date, month, year, receiptImage, category, notes } = req.body
+        const { type, fullDate, receiptImage, category, notes } = req.body
         const { amount, date, month, year } = +req.body
         try {
             const oldTransaction = await Transaction.findOne(TransactionId)
