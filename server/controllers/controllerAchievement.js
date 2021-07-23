@@ -11,7 +11,7 @@ class Controller {
         newAchievement.UserId = userId
         newAchievement.BadgeId = badgeId
         newAchievement.date = created.getDate()
-        newAchievement.month = created.getMonth()
+        newAchievement.month = created.getMonth() + 1
         newAchievement.year = created.getFullYear()
 
         Achievement.create(newAchievement)
