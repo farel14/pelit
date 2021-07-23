@@ -2,17 +2,17 @@ const request = require("supertest");
 const app = require("../app");
 const { User } = require("../models");
 
-// if (process.env.NODE_ENV == "test") {
-//   afterAll((done) => {
-//     User.destroy({ truncate: { cascade: true } })
-//       .then(() => {
-//         done();
-//       })
-//       .catch((err) => {
-//         done(err);
-//       });
-//   });
-// }
+if (process.env.NODE_ENV == "test") {
+  afterAll((done) => {
+    User.destroy({ truncate: { cascade: true } })
+      .then(() => {
+        done();
+      })
+      .catch((err) => {
+        done(err);
+      });
+  });
+}
 
 // Test Register
 describe("POST /register [SUCCESS CASE]", () => {
@@ -129,25 +129,44 @@ describe("POST /register [ERROR CASE]", () => {
         }
       });
   });
-  test("Failed because of the email has been registered", (done) => {
+  test("Failed because of the full name empty", (done) => {
     request(app)
       .post("/register")
       .send({
-        email: "tesAja@mail.com",
+        email: "ahmadfaisal@mail.com",
         password: "12345",
-        fullName: "Tes aja",
+        fullName: "",
       })
       .end((err, res) => {
         if (err) done(err);
         else {
           expect(res.status).toBe(400);
           expect(res.body.message).toEqual(
-            expect.arrayContaining(["email must be unique"])
+            expect.arrayContaining(["Full name cannot be empty"])
           );
           done();
         }
       });
   });
+  // test("Failed because of the email has been registered", (done) => {
+  //   request(app)
+  //     .post("/register")
+  //     .send({
+  //       email: "tesAja@mail.com",
+  //       password: "12345",
+  //       fullName: "Tes aja",
+  //     })
+  //     .end((err, res) => {
+  //       if (err) done(err);
+  //       else {
+  //         expect(res.status).toBe(400);
+  //         expect(res.body.message).toEqual(
+  //           expect.arrayContaining(["Email must be unique"])
+  //         );
+  //         done();
+  //       }
+  //     });
+  // });
   test("Failed because of the email type not valid", (done) => {
     request(app)
       .post("/register")
