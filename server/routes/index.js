@@ -19,5 +19,9 @@ router.use("/register", registerRouter);
 // router.use("/achievement", achievement);
 router.use("/transactions", authentication, transactions);
 router.use("/target", authentication, target);
+router.use("/badge", badge);
+router.use("/achievement", achievement);
+router.use('/transactions', transactions);
+router.use('/target', target);
 
 module.exports = router;
