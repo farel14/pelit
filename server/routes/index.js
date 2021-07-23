@@ -17,11 +17,11 @@ router.use("/register", registerRouter);
 // router.use("/user", user); // Login dan Register masuk ke route ini
 // router.use("/badge", badge);
 // router.use("/achievement", achievement);
-router.use("/transactions", authentication, transactions);
-router.use("/target", authentication, target);
-router.use("/badge", badge);
-router.use("/achievement", achievement);
-router.use('/transactions', transactions);
-router.use('/target', target);
+// router.use("/transactions", authentication, transactions);
+// router.use("/target", authentication, target);
+// router.use("/badge", badge);
+// router.use("/achievement", achievement);
+router.use("/transactions", transactions);
+router.use("/target", target);
 
 module.exports = router;

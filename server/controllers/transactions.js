@@ -120,32 +120,26 @@ class TransactionController {
 
   static async postOne(req, res) {
     let UserId = req.params.UserId;
-    const { type, fullDate, date, receiptImage, category, notes } = req.body;
-    const { amount, month, year } = +req.body;
-    // ? month Number & year Number
-    // ! amount positive -budget, amount negative +budget
+    let { type, fullDate, category, note, amount, title } = req.body;
+
+    const fullDateArr = fullDate.split("-");
+    const year = fullDateArr[0];
+    const month = fullDateArr[1];
+    const date = fullDateArr[2];
     try {
-      const userInstance = await User.findOne(UserId);
-
-      if (!userInstance)
-        return res.status(400).json({ message: "User not found" });
-
       const newData = await Transaction.create({
         UserId,
         type,
-        amount,
+        amount: +amount,
         fullDate,
         date,
         month,
         year,
-        receiptImage,
+        receiptImage: req.urlImage,
         category,
-        notes,
+        note,
+        title,
       });
-
-      // ? update balance
-      userInstance.balance -= amount;
-      await userInstance.save();
 
       await History.create({
         event: `A transaction with id ${newData.id} has been created and user ${UserId} balance has been updated`,
