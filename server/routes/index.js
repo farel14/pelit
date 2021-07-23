@@ -7,7 +7,7 @@ const router = express.Router();
 let target = require("./target.js");
 // let badge = require("./badge");
 // let achievement = require("./achievement");
-let loginRouter = require("../routes/loginRouter");
+let loginRouter = require("./loginRouter");
 // let registerRouter = require("../../../bin/registerRouter");
 
 // router.use("/", home); // Login dan Register masuk ke route ini
