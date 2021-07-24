@@ -9,6 +9,7 @@ let target = require("./target.js");
 // let achievement = require("./achievement");
 let loginRouter = require("../routes/loginRouter");
 // let registerRouter = require("../../../bin/registerRouter");
+const ocr = require('./ocr')
 
 // router.use("/", home); // Login dan Register masuk ke route ini
 router.use("/login", loginRouter);
@@ -18,5 +19,6 @@ router.use("/login", loginRouter);
 // router.use("/achievement", achievement);
 router.use('/transactions', transactions);
 router.use('/target', target);
+router.use('/ocr', ocr)
 
 module.exports = router;
