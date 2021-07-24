@@ -23,7 +23,7 @@ class Controller {
             include: [User]
         })
         .then(badge => {
-            res.status(200).json(badge)
+            res.status(200).json(badge[0])
         })
         .catch(err => {
             res.status(500).json({message: err })

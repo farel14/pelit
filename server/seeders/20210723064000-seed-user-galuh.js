@@ -1,10 +1,20 @@
-const { passwordHash } = require("../helpers/passwordBcrypt");
-
-("use strict");
-const data = require("./data/users.json");
+'use strict';
+if (process.env.NODE_ENV === 'development') {
+  require('dotenv').config()
+}
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    return queryInterface.bulkInsert('Users', [{
+      email: "galuh.alifani@gmail.com",
+      password: 'password123',
+      fullName: 'Galuh Adika Alifani',
+      photoProfile: null,
+      balance: 10000000,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    },
+  ])
     /**
      * Add seed commands here.
      *
@@ -13,25 +23,16 @@ module.exports = {
      *   name: 'John Doe',
      *   isBetaMember: false
      * }], {});
-     */
-    await queryInterface.bulkInsert(
-      "Users",
-      data.map((ele) => {
-        ele.createdAt = new Date();
-        ele.updatedAt = new Date();
-        ele.password = passwordHash(ele.password);
-        return ele;
-      })
-    );
+    */
   },
 
   down: async (queryInterface, Sequelize) => {
+    return queryInterface.bulkDelete('Users', null, {});
     /**
      * Add commands to revert seed here.
      *
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
-    await queryInterface.bulkDelete("Users", null, {});
-  },
+  }
 };

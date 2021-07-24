@@ -1,15 +1,33 @@
-const express = require('express')
-const Transaction = require('../controllers/transactions')
-const router = express.Router()
+const express = require("express");
+const Transaction = require("../controllers/transactions");
+const router = express.Router();
+const imageKit = require("../middlewares/imageKit");
+
+const multer = require("multer");
+const upload = multer();
 
 router.get('/', Transaction.getAll)
-router.get('/category/:UserId', Transaction.getByCategory)
-router.get('/date/:UserId', Transaction.getByDate)
 
+// for summary page
+router.get('/category/:UserId', Transaction.getAllGroupedByCategory)
+router.get('/date/:UserId', Transaction.getAllGroupedByDate)
+
+// for analytics
 router.get('/between/:UserId', Transaction.getBetweenTwoDates)
-router.get('/:UserId', Transaction.getAllByUserId)
-router.post('/:UserId', Transaction.postOne)
-router.put('/:TransactionId', Transaction.putOne)
-router.delete('/:TransactionId', Transaction.deleteOne)
+router.get('/between/:UserId/:type', Transaction.getBetweenTwoDatesByType)
 
-module.exports = router
+// for summary page
+router.get('/:UserId/:type', Transaction.getByType) // by income / by expense for each userId in a specific month
+router.get('/:UserId', Transaction.getAllByUserId)
+
+// for add/edit/delete
+router.post(
+  "/:UserId",
+  upload.single("receiptImage"),
+  imageKit,
+  Transaction.postOne
+);
+router.put("/:TransactionId", Transaction.putOne);
+router.delete("/:TransactionId", Transaction.deleteOne);
+
+module.exports = router;

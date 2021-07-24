@@ -1,226 +1,387 @@
-const { Transaction, History, User } = require('../models')
-const sequelize = require('sequelize');
+const { Transaction, History, User } = require("../models");
+const sequelize = require("sequelize");
 const Op = sequelize.Op;
 
 class TransactionController {
-    static async getAll(req, res) {
-        const { category, type } = req.query
-        const { date, month, year } = +req.query
-        // ? month Number & year Number
-        try {
-            const data = await Transaction.findAll({
-                where: { category, date, month, year, type }
+  static async getAll(req, res) {
+    const { category, type } = req.query;
+    const { date, month, year } = +req.query;
+    // ? month Number & year Number
+    try {
+      const data = await Transaction.findAll({
+        where: { category, date, month, year, type },
+      });
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(500).json({ message: err });
+    }
+  }
+
+  static getAllByUserId(req, res) {
+    let userId = +req.params.UserId;
+
+    Transaction.findAll({
+      where: {
+        UserId: userId,
+      },
+    })
+      .then((data) => {
+        res.status(200).json(data);
+      })
+      .catch((err) => {
+        res.status(500).json({ message: err });
+      });
+  }
+
+  static getByType(req, res) {
+    let userId = +req.params.UserId;
+    let type = req.params.type
+    let month = +req.body.month;
+
+    Transaction.findAll({
+      where: {
+        UserId: userId,
+        month: month,
+        type: type
+      },
+    })
+      .then((data) => {
+            data.forEach(ele => {
+                ele.type === 'Expense' ? ele.amount *= -1 : null
+                return ele
             })
-            res.status(200).json(data)
-        } catch (err) {
-            res.status(500).json({ message: err })
+
+        let total = 0
+        for (let i = 0; i < data.length; i++) {
+            total += data[i].amount
         }
-    }
 
-    static getAllByUserId(req, res) {
-        let userId = +req.params.UserId
+        res.status(200).json({total, data});
+      })
+      .catch((err) => {
+        res.status(500).json({ message: err });
+      });
+  }
 
-        Transaction.findAll({
-            where: {
-                UserId: userId
-            }
-        })
-            .then(data => {
-                res.status(200).json(data)
-            })
-            .catch(err => {
-                res.status(500).json({ message: err })
-            })
-    }
 
-    static getByCategory(req, res) {
-        let userId = +req.params.UserId
-        let monthNum = +req.body.month
+  static getAllGroupedByCategory(req, res) {
+    let userId = +req.params.UserId;
+    let monthNum = +req.body.month;
 
-        Transaction.findAll({
-            where: {
-                month: monthNum,
-                UserId: userId
-            },
-            attributes: [
-                'category',
-                // [sequelize.fn('sum', sequelize.col('amount')), 'amount']
-                [sequelize.fn('sum', sequelize.col('amount')), 'amount', 'type']
-            ],
-            group: ['category']
-        })
-            .then(data => {
-                res.status(200).json(data.map)
-            })
-            .catch(err => {
-                res.status(500).json({ message: err })
-            })
-    }
-
-    static getByDate(req, res) {
-        let userId = +req.params.UserId
-        let monthNum = +req.body.month
-
-        // const expenseChoices = ['Housing', 'Transportation', 'Food & Beverage', 'Utilities', 'Insurance', 'Medical & Healthcare', 'Saving, Investing, & Debt Payments', 'Personal Spending', 'Other Expense']
-        // const incomeChoices = ['Salary', 'Wages', 'Commission', 'Interest', 'Investments', 'Gifts', 'Allowance', 'Other Income']
-
-        Transaction.findAll({
-            where: {
-                month: monthNum,
-                UserId: userId
-            },
-            // attributes: [
-            //     'date',
-            //     [sequelize.fn('sum', sequelize.col('amount')), 'amount']
-            // ],
-            // group: ['date']
-        })
-            .then(data => {
-                let groupByDate = {}
-                data.forEach(ele => {
-                    // expenseChoices.indexOf(ele.type) >= 0 ? ele.amount = -ele.amount : ele.amount
-                    ele.type === 'Expense' ? ele.amount *= -1 : null
-                    if (!groupByDate[ele.date]) {
-                        groupByDate[ele.date] = [{
-                            category: ele.category,
-                            amount: ele.amount
-                        }]
-                    } else {
-                        groupByDate[ele.date].push({
-                            category: ele.category,
-                            amount: ele.amount
+    Transaction.findAll({
+      where: {
+        month: monthNum,
+        UserId: userId,
+      },
+      order: ['category']
+    })
+      .then((data) => {
+        let group = []
+        let flag = true
+        data.forEach(ele => {
+            ele.type === 'Expense' ? ele.amount *= -1 : null
+            if (group.length > 0) {
+                for (let i = 0; i < group.length; i++) {
+                    if (group[i].category == ele.category) {
+                        flag = true
+                        group[i].total += ele.amount
+                        group[i].items.push({
+                            id: ele.id,
+                            title: ele.title,
+                            nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
+                            type: ele.type,
+                            title: ele.title,
+                            amount: ele.amount,
+                            date: ele.date,
+                            month: ele.month,
+                            year: ele.year,
+                            fullDate: ele.fullDate
                         })
-                    }
-                    // console.log(groupByDate)
-                    return ele
-                })
-
-                res.status(200).json(groupByDate)
-            })
-            .catch(err => {
-                res.status(500).json({ message: err })
-            })
-    }
-
-    static getBetweenTwoDates(req, res) {
-        let startDate = req.body.startDate
-        let endDate = req.body.endDate
-        let userId = +req.params.UserId
-
-        let allTransactions;
-
-        Transaction.findAll({
-            where: {
-                UserId: userId,
-                fullDate: {
-                    [Op.between]: [startDate, endDate]
-                }
+                    } else {
+                        flag = false
+                    }        
+                }    
+            } else {
+                flag = false
             }
+
+            if (flag == false) {
+                group.push({
+                    category: ele.category,
+                    total: ele.amount,
+                    items: [{
+                        id: ele.id,
+                        title: ele.title,
+                        nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
+                        type: ele.type,
+                        title: ele.title,
+                        amount: ele.amount,
+                        date: ele.date,
+                        month: ele.month,
+                        year: ele.year,
+                        fullDate: ele.fullDate
+                    }]
+                })
+            }
+            return ele
         })
-            .then(data => {
-                allTransactions = [...data]
-                return Transaction.findAll({
-                    attributes: [
-                        [sequelize.fn('sum', sequelize.col('amount')), 'amount']
-                    ],
-                    where: {
-                        UserId: userId,
-                        fullDate: {
-                            [Op.between]: [startDate, endDate]
-                        }
-                    }
-                })
-            })
-            .then(output => {
-                res.status(200).json({ total: output[0].amount, data: allTransactions })
-            })
-            .catch(err => {
-                res.status(500).json({ message: err })
-            })
-    }
+        res.status(200).json(group);
+      })
+      .catch((err) => {
+        res.status(500).json({ message: err });
+      });
+  }
 
-    static async postOne(req, res) {
-        let UserId = req.params.UserId
-        const { type, fullDate, date, receiptImage, category, notes } = req.body
-        const { amount, month, year } = +req.body
-        // ? month Number & year Number
-        // ! amount positive -budget, amount negative +budget
-        try {
-            const userInstance = await User.findOne(UserId)
 
-            if (!userInstance) return res.status(400).json({ message: 'User not found' })
+  static getAllGroupedByDate(req, res) {
+    let userId = +req.params.UserId;
+    let monthNum = +req.body.month;
 
-            const newData = await Transaction.create({
-                UserId, type, amount, fullDate, date, month, year, receiptImage, category, notes
-            })
-
-            // ? update balance
-            userInstance.balance -= amount
-            await userInstance.save()
-
-            await History.create({ event: `A transaction with id ${newData.id} has been created and user ${UserId} balance has been updated` })
-            res.status(201).json(newData)
-
-        } catch (error) {
-            console.error(error)
-            res.status(500).json({ message: error })
-        }
-    }
-    static async putOne(req, res) {
-        const { TransactionId } = +req.params
-        const { type, fullDate, receiptImage, category, notes } = req.body
-        const { amount, date, month, year } = +req.body
-        try {
-            const oldTransaction = await Transaction.findOne(TransactionId)
-            if (!oldTransaction) return res.status(400).json({ message: 'Transaction not found' })
-
-            if (amount) {
-                // ? update balance
-                const UserId = oldTransaction.UserId
-                const userInstance = await User.findOne(UserId)
-                userInstance.balance = userInstance.balance - Number(oldTransaction.amount) + amount
+    Transaction.findAll({
+      where: {
+        month: monthNum,
+        UserId: userId,
+      },
+      order: [['date', 'DESC']]
+    })
+      .then((data) => {
+        let group = []
+        let flag = true
+        data.forEach(ele => {
+            ele.type === 'Expense' ? ele.amount *= -1 : null
+            if (group.length > 0) {
+                for (let i = 0; i < group.length; i++) {
+                    if (group[i].date == ele.date) {
+                        flag = true
+                        group[i].total += ele.amount
+                        group[i].items.push({
+                            id: ele.id,
+                            title: ele.title,
+                            category: ele.category,
+                            type: ele.type,
+                            title: ele.title,
+                            amount: ele.amount,
+                            month: ele.month,
+                            year: ele.year,
+                            fullDate: ele.fullDate
+                        })
+                    } else {
+                        flag = false
+                    }        
+                }    
+            } else {
+                flag = false
             }
 
-            Transaction.update({
-                type, fullDate, date, month, year, receiptImage, category, notes
-            }, {
-                where: {
-                    id: TransactionId
-                }
+            if (flag == false) {
+                group.push({
+                    date: ele.date,
+                    nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
+                    total: ele.amount,
+                    items: [{
+                        id: ele.id,
+                        title: ele.title,
+                        category: ele.category,
+                        type: ele.type,
+                        title: ele.title,
+                        amount: ele.amount,
+                        month: ele.month,
+                        year: ele.year,
+                        fullDate: ele.fullDate
+                    }]
+                })
+            }
+            return ele
+        })
+
+        res.status(200).json(group);
+      })
+      .catch((err) => {
+        res.status(500).json({ message: err });
+      });
+  }
+
+
+  static getBetweenTwoDates(req, res) {
+    let startDate = req.body.startDate;
+    let endDate = req.body.endDate;
+    let userId = +req.params.UserId;
+
+    let allTransactions;
+
+    Transaction.findAll({
+      where: {
+        UserId: userId,
+        fullDate: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
+    })
+      .then((data) => {
+        allTransactions = [...data]
+            allTransactions.forEach(ele => {
+                ele.type === 'Expense' ? ele.amount *= -1 : null
+                return ele
             })
 
-            await userInstance.save()
-            await History.create({ event: `A transaction with id ${TransactionId} has been updated and user ${UserId} balance has been updated` })
-            res.status(200).json({ status: 'success' })
+            let output = 0
+            console.log(allTransactions.length)
+            for (let i = 0; i < allTransactions.length; i++) {
+                console.log(allTransactions[i].amount)
+                output += allTransactions[i].amount
+            }
 
-        } catch (error) {
-            console.error(error)
-            res.status(500).json({ message: error })
-        }
+            res
+            .status(200)
+            .json({ total: output, data: allTransactions });
+      })
+      .catch((err) => {
+        res.status(500).json({ message: err });
+      });
+  }
 
+  static getBetweenTwoDatesByType(req, res) {
+    let startDate = req.body.startDate;
+    let endDate = req.body.endDate;
+    let userId = +req.params.UserId;
+    let type = req.params.type
+
+    let allTransactions;
+
+    Transaction.findAll({
+      where: {
+        UserId: userId,
+        type: type,
+        fullDate: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
+    })
+      .then((data) => {
+        allTransactions = [...data]
+            allTransactions.forEach(ele => {
+                ele.type === 'Expense' ? ele.amount *= -1 : null
+                return ele
+            })
+
+            let output = 0
+            console.log(allTransactions.length)
+            for (let i = 0; i < allTransactions.length; i++) {
+                console.log(allTransactions[i].amount)
+                output += allTransactions[i].amount
+            }
+
+            res
+            .status(200)
+            .json({ total: output, data: allTransactions });
+      })
+      .catch((err) => {
+        res.status(500).json({ message: err });
+      });
+  }
+
+  static async postOne(req, res) {
+    let UserId = req.params.UserId;
+    let { type, fullDate, category, note, amount, title } = req.body;
+
+    const fullDateArr = fullDate.split("-");
+    const year = fullDateArr[0];
+    const month = fullDateArr[1];
+    const date = fullDateArr[2];
+    try {
+      const newData = await Transaction.create({
+        UserId,
+        type,
+        amount: +amount,
+        fullDate,
+        date,
+        month,
+        year,
+        receiptImage: req.urlImage,
+        category,
+        note,
+        title,
+      });
+
+      await History.create({
+        event: `A transaction with id ${newData.id} has been created and user ${UserId} balance has been updated`,
+      });
+      res.status(201).json(newData);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: error });
     }
-    static async deleteOne(req, res) {
-        const { TransactionId } = +req.params
-        try {
-            const transactionInstance = await Transaction.findOne(TransactionId)
-            if (!transactionInstance) return res.status(400).json({ message: 'Transaction not found' })
-            const UserId = transactionInstance.UserId
+  }
+  static async putOne(req, res) {
+    const { TransactionId } = +req.params;
+    const { type, fullDate, receiptImage, category, notes } = req.body;
+    const { amount, date, month, year } = +req.body;
+    try {
+      const oldTransaction = await Transaction.findOne(TransactionId);
+      if (!oldTransaction)
+        return res.status(400).json({ message: "Transaction not found" });
 
-            // ? update balance
-            const userInstance = await User.findOne(UserId)
-            userInstance.balance += Number(transactionInstance.amount)
-            userInstance.save()
+      if (amount) {
+        // ? update balance
+        const UserId = oldTransaction.UserId;
+        const userInstance = await User.findOne(UserId);
+        userInstance.balance =
+          userInstance.balance - Number(oldTransaction.amount) + amount;
+      }
 
-            // ? deleting transaction
-            transactionInstance.destroy()
-
-            await History.create({ event: `A transaction with id ${TransactionId} has been deleted` })
-            res.status(200).json({ status: 'success' })
-        } catch (error) {
-            console.error(error)
-            res.status(500).json({ message: error })
+      Transaction.update(
+        {
+          type,
+          fullDate,
+          date,
+          month,
+          year,
+          receiptImage,
+          category,
+          notes,
+        },
+        {
+          where: {
+            id: TransactionId,
+          },
         }
+      );
+
+      await userInstance.save();
+      await History.create({
+        event: `A transaction with id ${TransactionId} has been updated and user ${UserId} balance has been updated`,
+      });
+      res.status(200).json({ status: "success" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: error });
     }
+  }
+  static async deleteOne(req, res) {
+    const { TransactionId } = +req.params;
+    try {
+      const transactionInstance = await Transaction.findOne(TransactionId);
+      if (!transactionInstance)
+        return res.status(400).json({ message: "Transaction not found" });
+      const UserId = transactionInstance.UserId;
+
+      // ? update balance
+      const userInstance = await User.findOne(UserId);
+      userInstance.balance += Number(transactionInstance.amount);
+      userInstance.save();
+
+      // ? deleting transaction
+      transactionInstance.destroy();
+
+      await History.create({
+        event: `A transaction with id ${TransactionId} has been deleted`,
+      });
+      res.status(200).json({ status: "success" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: error });
+    }
+  }
 }
 
-module.exports = TransactionController
+module.exports = TransactionController;
