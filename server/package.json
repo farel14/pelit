@@ -4,21 +4,31 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --detectOpenHandles --forceExit",
+    "dev": "nodemon bin/http"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "init": "^0.1.2",
+    "jest": "^27.0.6",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.2",
     "pg": "^8.6.0",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.6.5",
+    "supertest": "^6.1.4",
+    "tesseract.js": "^2.1.4"
   },
   "devDependencies": {
     "dotenv": "^10.0.0",
-    "sequelize-cli": "^6.2.0"
+    "faker": "^5.5.3",
+    "jest": "^27.0.6",
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^6.1.4"
   }
 }
