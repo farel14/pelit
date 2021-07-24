@@ -63,6 +63,7 @@ class TransactionController {
       });
   }
 
+
   static getAllGroupedByCategory(req, res) {
     let userId = +req.params.UserId;
     let monthNum = +req.body.month;
@@ -131,6 +132,7 @@ class TransactionController {
       });
   }
 
+
   static getAllGroupedByDate(req, res) {
     let userId = +req.params.UserId;
     let monthNum = +req.body.month;
@@ -191,12 +193,14 @@ class TransactionController {
             }
             return ele
         })
+
         res.status(200).json(group);
       })
       .catch((err) => {
         res.status(500).json({ message: err });
       });
   }
+
 
   static getBetweenTwoDates(req, res) {
     let startDate = req.body.startDate;
