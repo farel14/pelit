@@ -6,5 +6,6 @@ router.patch("/balance/:userId", UserController.patchBalanceUser);
 router.patch("/photo-profile/:userId", UserController.patchPhotoProfileUser);
 router.patch("/email/:userId", UserController.patchEmailUser);
 router.patch("/password/:userId", UserController.patchPasswordUser);
+router.patch("/full-name/:userId", UserController.patchFullNameUser);
 
 module.exports = router;

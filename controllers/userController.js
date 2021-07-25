@@ -77,6 +77,21 @@ class UserController {
         res.status(500).json({ message: "Internal Server Error" });
       });
   }
+
+  static patchFullNameUser(req, res) {
+    const { fullName } = req.body;
+    const id = req.params.userId;
+    User.update({ fullName }, { where: { id } })
+      .then((user) => {
+        res.status(200).json({
+          message: "Full name has been updated successfully",
+          fullName,
+        });
+      })
+      .catch((err) => {
+        res.status(500).json({ message: "Internal Server Error" });
+      });
+  }
 }
 
 module.exports = UserController;
