@@ -74,6 +74,7 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "User",
     }
   );
+
   User.beforeCreate((user) => {
     user.password = passwordHash(user.password);
   });

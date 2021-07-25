@@ -1,4 +1,4 @@
-const { User, Badge, Target } = require("../models");
+const { User, Badge, Target, Transaction } = require("../models");
 const { comparePassword } = require("../helpers/passwordBcrypt");
 const { generateJWT } = require("../helpers/jsonWebToken");
 
@@ -9,7 +9,7 @@ class LoginController {
       where: {
         email,
       },
-      include: [Badge, Target]
+      include: [Badge, Target, Transaction]
     })
       .then((user) => {
         if (user) {
@@ -28,7 +28,12 @@ class LoginController {
                 photoProfile: user.photoProfile,
                 balance: user.balance,
                 Badges: user.Badges,
-                Targets: user.Targets
+                Targets: user.Targets,
+                Transactions: {
+                    totalExpense,
+                    totalIncome,
+                    data: user.Transactions
+                }
               },
             });
           } else {
