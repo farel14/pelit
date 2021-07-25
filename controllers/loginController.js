@@ -24,6 +24,7 @@ class LoginController {
                 email: user.email,
                 photoProfile: user.photoProfile,
                 balance: user.balance,
+                id: user.id,
               },
             });
           } else {

@@ -14,6 +14,7 @@ function authentication(req, res, next) {
               email: user.email,
               photoPofile: user.photoProfile,
               balance: user.balance,
+              fullName: user.fullName,
             };
             next();
           } else {
