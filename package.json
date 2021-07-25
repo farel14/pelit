@@ -1,11 +1,14 @@
 {
-  "name": "server",
+  "name": "pelit-server",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit",
-    "dev": "nodemon bin/http"
+    "dev": "nodemon bin/http",
+    "start": "node bin/http",
+    "seeder": "SET NODE_ENV=development&&npx sequelize db:seed --seed",
+    "sequelize": "SET NODE_ENV=development&&npx sequelize"
   },
   "keywords": [],
   "author": "",
