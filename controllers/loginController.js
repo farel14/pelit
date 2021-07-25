@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Badge, Target, Transaction } = require("../models");
 const { comparePassword } = require("../helpers/passwordBcrypt");
 const { generateJWT } = require("../helpers/jsonWebToken");
 
@@ -9,6 +9,7 @@ class LoginController {
       where: {
         email,
       },
+      include: [Badge, Target, Transaction]
     })
       .then((user) => {
         if (user) {
@@ -20,11 +21,19 @@ class LoginController {
             res.status(200).json({
               access_token,
               data: {
-                fullName: user.fullName,
+                id: user.id,
                 email: user.email,
+                fullName: user.fullName,
+                firstName: user.fullName.split(' ')[0],
                 photoProfile: user.photoProfile,
                 balance: user.balance,
-                id: user.id,
+                Badges: user.Badges,
+                Targets: user.Targets,
+                Transactions: {
+                    totalExpense,
+                    totalIncome,
+                    data: user.Transactions
+                }
               },
             });
           } else {
