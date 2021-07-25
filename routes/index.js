@@ -3,7 +3,7 @@ const router = express.Router();
 const { authentication } = require("../middlewares/auth");
 
 // let home = require("./home.js");
-// let user = require("./user.js");
+let user = require("./user.js");
 let transactions = require("./transactions.js");
 let target = require("./target.js");
 const ocr = require('./ocr')
@@ -13,7 +13,7 @@ let loginRouter = require("./loginRouter");
 let registerRouter = require("./registerRouter");
 
 // router.use("/", home); 
-// router.use("/user", user); 
+router.use("/user", user); 
 router.use("/login", loginRouter);
 router.use('/ocr', ocr)
 router.use("/register", registerRouter);

@@ -3,7 +3,8 @@ const { Badge, User } = require('../models')
 class Controller {
     static getAllBadges(req, res) {
         Badge.findAll({
-            include: [User]
+            include: [User],
+            order: ['id']
         })
         .then(badges => {
             res.status(200).json(badges)
