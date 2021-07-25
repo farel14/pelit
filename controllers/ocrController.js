@@ -4,9 +4,11 @@ class OCRController {
     static postOcr(req, res) {
         const { imageUrl } = req.body
 
+        if (!imageUrl) return res.status(400).json({message: 'bad request'})
+
         tesseract(imageUrl)
-            .then(totalPrice => {
-                res.status(200).json(totalPrice)
+            .then(dataObj => {
+                res.status(200).json(dataObj)
             })
             .catch(err => {
                 console.error(err)
