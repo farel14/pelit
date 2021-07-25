@@ -18,6 +18,15 @@ class LoginController {
               id: user.id,
               email: user.id,
             });
+            let totalExpense = 0
+            let totalIncome = 0
+                for (let i = 0; i < user.Transactions.length; i++) {
+                    if (user.Transactions[i].type == 'Expense') {
+                        totalExpense += user.Transactions[i].amount
+                    } else {
+                        totalIncome += user.Transactions[i].amount
+                    }
+                }
             res.status(200).json({
               access_token,
               data: {
@@ -45,7 +54,7 @@ class LoginController {
       })
       .catch((err) => {
         console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
+        res.status(500).json({ message: err });
       });
   }
 }
