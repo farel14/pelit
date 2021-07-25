@@ -96,7 +96,6 @@ describe("PATCH /user/password/:userId [SUCCESS CASE]", () => {
         password: "baba@mail.com",
       })
       .end((err, res) => {
-        console.log(res.bod);
         if (err) done(err);
         else {
           expect(res.status).toBe(200);
@@ -104,6 +103,29 @@ describe("PATCH /user/password/:userId [SUCCESS CASE]", () => {
             "message",
             "Password has been updated successfully"
           );
+          done();
+        }
+      });
+  });
+});
+
+describe("PATCH /user/full-name/:userId [SUCCESS CASE]", () => {
+  test("Shoud send a object with key: message and full name", (done) => {
+    request(app)
+      .patch("/user/full-name/1")
+      .send({
+        fullName: "Baba Dadak",
+      })
+      .end((err, res) => {
+        console.log(res.bod);
+        if (err) done(err);
+        else {
+          expect(res.status).toBe(200);
+          expect(res.body).toHaveProperty(
+            "message",
+            "Full name has been updated successfully"
+          );
+          expect(res.body).toHaveProperty("fullName", expect.any(String));
           done();
         }
       });
