@@ -12,9 +12,12 @@ router.get('/', Transaction.getAll)
 router.get('/category/:UserId', Transaction.getAllGroupedByCategory)
 router.get('/date/:UserId', Transaction.getAllGroupedByDate)
 
+// for edit page
+router.get('/expense/:TransactionId', Transaction.getByTransactionId)
+
 // for analytics
-router.get('/between/:UserId', Transaction.getBetweenTwoDates)
 router.get('/between/:UserId/:type', Transaction.getBetweenTwoDatesByType)
+router.get('/between/:UserId', Transaction.getBetweenTwoDates)
 
 // for summary page
 router.get('/:UserId/:type', Transaction.getByType) // by income / by expense for each userId in a specific month

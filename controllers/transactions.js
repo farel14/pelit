@@ -46,17 +46,17 @@ class TransactionController {
       },
     })
       .then((data) => {
-            data.forEach(ele => {
-                ele.type === 'Expense' ? ele.amount *= -1 : null
-                return ele
-            })
+        data.forEach(ele => {
+          ele.type === 'Expense' ? ele.amount *= -1 : null
+          return ele
+        })
 
         let total = 0
         for (let i = 0; i < data.length; i++) {
-            total += data[i].amount
+          total += data[i].amount
         }
 
-        res.status(200).json({total, data});
+        res.status(200).json({ total, data });
       })
       .catch((err) => {
         res.status(500).json({ message: err });
@@ -79,51 +79,51 @@ class TransactionController {
         let group = []
         let flag = true
         data.forEach(ele => {
-            ele.type === 'Expense' ? ele.amount *= -1 : null
-            if (group.length > 0) {
-                for (let i = 0; i < group.length; i++) {
-                    if (group[i].category == ele.category) {
-                        flag = true
-                        group[i].total += ele.amount
-                        group[i].items.push({
-                            id: ele.id,
-                            title: ele.title,
-                            nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
-                            type: ele.type,
-                            title: ele.title,
-                            amount: ele.amount,
-                            date: ele.date,
-                            month: ele.month,
-                            year: ele.year,
-                            fullDate: ele.fullDate
-                        })
-                    } else {
-                        flag = false
-                    }        
-                }    
-            } else {
-                flag = false
-            }
-
-            if (flag == false) {
-                group.push({
-                    category: ele.category,
-                    total: ele.amount,
-                    items: [{
-                        id: ele.id,
-                        title: ele.title,
-                        nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
-                        type: ele.type,
-                        title: ele.title,
-                        amount: ele.amount,
-                        date: ele.date,
-                        month: ele.month,
-                        year: ele.year,
-                        fullDate: ele.fullDate
-                    }]
+          ele.type === 'Expense' ? ele.amount *= -1 : null
+          if (group.length > 0) {
+            for (let i = 0; i < group.length; i++) {
+              if (group[i].category == ele.category) {
+                flag = true
+                group[i].total += ele.amount
+                group[i].items.push({
+                  id: ele.id,
+                  title: ele.title,
+                  nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
+                  type: ele.type,
+                  title: ele.title,
+                  amount: ele.amount,
+                  date: ele.date,
+                  month: ele.month,
+                  year: ele.year,
+                  fullDate: ele.fullDate
                 })
+              } else {
+                flag = false
+              }
             }
-            return ele
+          } else {
+            flag = false
+          }
+
+          if (flag == false) {
+            group.push({
+              category: ele.category,
+              total: ele.amount,
+              items: [{
+                id: ele.id,
+                title: ele.title,
+                nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
+                type: ele.type,
+                title: ele.title,
+                amount: ele.amount,
+                date: ele.date,
+                month: ele.month,
+                year: ele.year,
+                fullDate: ele.fullDate
+              }]
+            })
+          }
+          return ele
         })
         res.status(200).json(group);
       })
@@ -148,50 +148,50 @@ class TransactionController {
         let group = []
         let flag = true
         data.forEach(ele => {
-            ele.type === 'Expense' ? ele.amount *= -1 : null
-            if (group.length > 0) {
-                for (let i = 0; i < group.length; i++) {
-                    if (group[i].date == ele.date) {
-                        flag = true
-                        group[i].total += ele.amount
-                        group[i].items.push({
-                            id: ele.id,
-                            title: ele.title,
-                            category: ele.category,
-                            type: ele.type,
-                            title: ele.title,
-                            amount: ele.amount,
-                            month: ele.month,
-                            year: ele.year,
-                            fullDate: ele.fullDate
-                        })
-                    } else {
-                        flag = false
-                    }        
-                }    
-            } else {
-                flag = false
-            }
-
-            if (flag == false) {
-                group.push({
-                    date: ele.date,
-                    nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
-                    total: ele.amount,
-                    items: [{
-                        id: ele.id,
-                        title: ele.title,
-                        category: ele.category,
-                        type: ele.type,
-                        title: ele.title,
-                        amount: ele.amount,
-                        month: ele.month,
-                        year: ele.year,
-                        fullDate: ele.fullDate
-                    }]
+          ele.type === 'Expense' ? ele.amount *= -1 : null
+          if (group.length > 0) {
+            for (let i = 0; i < group.length; i++) {
+              if (group[i].date == ele.date) {
+                flag = true
+                group[i].total += ele.amount
+                group[i].items.push({
+                  id: ele.id,
+                  title: ele.title,
+                  category: ele.category,
+                  type: ele.type,
+                  title: ele.title,
+                  amount: ele.amount,
+                  month: ele.month,
+                  year: ele.year,
+                  fullDate: ele.fullDate
                 })
+              } else {
+                flag = false
+              }
             }
-            return ele
+          } else {
+            flag = false
+          }
+
+          if (flag == false) {
+            group.push({
+              date: ele.date,
+              nameDate: `${ele.date} ${ele.fullDate.toLocaleString('default', { month: 'long' })}`,
+              total: ele.amount,
+              items: [{
+                id: ele.id,
+                title: ele.title,
+                category: ele.category,
+                type: ele.type,
+                title: ele.title,
+                amount: ele.amount,
+                month: ele.month,
+                year: ele.year,
+                fullDate: ele.fullDate
+              }]
+            })
+          }
+          return ele
         })
 
         res.status(200).json(group);
@@ -219,21 +219,21 @@ class TransactionController {
     })
       .then((data) => {
         allTransactions = [...data]
-            allTransactions.forEach(ele => {
-                ele.type === 'Expense' ? ele.amount *= -1 : null
-                return ele
-            })
+        allTransactions.forEach(ele => {
+          ele.type === 'Expense' ? ele.amount *= -1 : null
+          return ele
+        })
 
-            let output = 0
-            console.log(allTransactions.length)
-            for (let i = 0; i < allTransactions.length; i++) {
-                console.log(allTransactions[i].amount)
-                output += allTransactions[i].amount
-            }
+        let output = 0
+        console.log(allTransactions.length)
+        for (let i = 0; i < allTransactions.length; i++) {
+          console.log(allTransactions[i].amount)
+          output += allTransactions[i].amount
+        }
 
-            res
-            .status(200)
-            .json({ total: output, data: allTransactions });
+        res
+          .status(200)
+          .json({ total: output, data: allTransactions });
       })
       .catch((err) => {
         res.status(500).json({ message: err });
@@ -259,21 +259,21 @@ class TransactionController {
     })
       .then((data) => {
         allTransactions = [...data]
-            allTransactions.forEach(ele => {
-                ele.type === 'Expense' ? ele.amount *= -1 : null
-                return ele
-            })
+        allTransactions.forEach(ele => {
+          ele.type === 'Expense' ? ele.amount *= -1 : null
+          return ele
+        })
 
-            let output = 0
-            console.log(allTransactions.length)
-            for (let i = 0; i < allTransactions.length; i++) {
-                console.log(allTransactions[i].amount)
-                output += allTransactions[i].amount
-            }
+        let output = 0
+        console.log(allTransactions.length)
+        for (let i = 0; i < allTransactions.length; i++) {
+          console.log(allTransactions[i].amount)
+          output += allTransactions[i].amount
+        }
 
-            res
-            .status(200)
-            .json({ total: output, data: allTransactions });
+        res
+          .status(200)
+          .json({ total: output, data: allTransactions });
       })
       .catch((err) => {
         res.status(500).json({ message: err });
@@ -377,6 +377,17 @@ class TransactionController {
         event: `A transaction with id ${TransactionId} has been deleted`,
       });
       res.status(200).json({ status: "success" });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: error });
+    }
+  }
+  static async getByTransactionId(req, res) {
+    const { TransactionId } = req.params
+    try {
+      const transactionInstance = await Transaction.findOne(TransactionId)
+      if (!transactionInstance) return res.status(400).json({ message: "Transaction not found" });
+      res.status(200).json(transactionInstance);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: error });
