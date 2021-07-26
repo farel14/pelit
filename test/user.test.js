@@ -2,13 +2,48 @@ const request = require("supertest");
 const app = require("../app");
 const { User } = require("../models");
 
+let user = {
+  email: "test@email.com",
+  password: "password123"
+}
+
+let targets = []
+let user_id;
+
+beforeAll(done => {
+  User.create({...user, fullName: 'Test User', photoProfile: '', balance: 2000000}) // create user
+  .then(user => {
+      let userId = user.id
+      user_id = user.id
+
+      console.log('NEW USER', user)
+
+      done()
+  })
+  .catch(err => {
+      // console.log('ERRRRRORRR CREATE USER')
+      done(err)
+  })
+})
+
+afterAll(done => {
+  User.destroy({ truncate: true, cascade: true})
+  .then(() => {
+      done()
+  })
+  .catch(err => {
+      done(err)
+  })
+})
+
 describe("GET /user/:userId [SUCCESS CASE]", () => {
   test("Shoud send a object with key: fullName, email, photoProfile, balance and id", (done) => {
     request(app)
-      .get("/user/1")
+      .get(`/user/${user_id}`)
       .end((err, res) => {
         if (err) done(err);
         else {
+          console.log(user_id, 'USER ID')
           expect(res.status).toBe(200);
           expect(res.body).toHaveProperty("fullName", expect.any(String));
           expect(res.body).toHaveProperty("email", expect.any(String));
@@ -24,7 +59,7 @@ describe("GET /user/:userId [SUCCESS CASE]", () => {
 describe("PATCH /user/balance/:userId [SUCCESS CASE]", () => {
   test("Shoud send a object with key: message and balance", (done) => {
     request(app)
-      .patch("/user/balance/1")
+      .patch(`/user/balance/${user_id}`)
       .send({
         balance: 50000,
       })
@@ -46,7 +81,7 @@ describe("PATCH /user/balance/:userId [SUCCESS CASE]", () => {
 describe("PATCH /user/photo-profile/:userId [SUCCESS CASE]", () => {
   test("Shoud send a object with key: message and photoProfile", (done) => {
     request(app)
-      .patch("/user/photo-profile/1")
+      .patch(`/user/photo-profile/${user_id}`)
       .send({
         photoProfile:
           "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2048px-User_icon_2.svg.png",
@@ -69,7 +104,7 @@ describe("PATCH /user/photo-profile/:userId [SUCCESS CASE]", () => {
 describe("PATCH /user/email/:userId [SUCCESS CASE]", () => {
   test("Shoud send a object with key: message and email", (done) => {
     request(app)
-      .patch("/user/email/1")
+      .patch(`/user/email/${user_id}`)
       .send({
         email: "baba@mail.com",
       })
@@ -91,7 +126,7 @@ describe("PATCH /user/email/:userId [SUCCESS CASE]", () => {
 describe("PATCH /user/password/:userId [SUCCESS CASE]", () => {
   test("Shoud send a object with key: message and password", (done) => {
     request(app)
-      .patch("/user/password/1")
+      .patch(`/user/password/${user_id}`)
       .send({
         password: "baba@mail.com",
       })
@@ -112,7 +147,7 @@ describe("PATCH /user/password/:userId [SUCCESS CASE]", () => {
 describe("PATCH /user/full-name/:userId [SUCCESS CASE]", () => {
   test("Shoud send a object with key: message and full name", (done) => {
     request(app)
-      .patch("/user/full-name/1")
+      .patch(`/user/full-name/${user_id}`)
       .send({
         fullName: "Baba Dadak",
       })
