@@ -3,19 +3,18 @@ const sequelize = require("sequelize");
 const Op = sequelize.Op;
 
 class TransactionController {
-  static async getAll(req, res) {
-    const { category, type } = req.query;
-    const { date, month, year } = +req.query;
-    // ? month Number & year Number
-    try {
-      const data = await Transaction.findAll({
-        where: { category, date, month, year, type },
-      });
-      res.status(200).json(data);
-    } catch (error) {
-      res.status(500).json({ message: error });
-    }
-  }
+  // static async getAll(req, res) {
+  //   const { category, type } = req.query;
+  //   const { date, month, year } = +req.query;
+  //   try {
+  //     const data = await Transaction.findAll({
+  //       where: { category, date, month, year, type },
+  //     });
+  //     res.status(200).json(data);
+  //   } catch (error) {
+  //     res.status(500).json({ message: error });
+  //   }
+  // }
 
   static getAllByUserId(req, res) {
     let userId = +req.params.UserId;
@@ -235,9 +234,7 @@ class TransactionController {
         });
 
         let output = 0;
-        console.log(allTransactions.length);
         for (let i = 0; i < allTransactions.length; i++) {
-          console.log(allTransactions[i].amount);
           output += allTransactions[i].amount;
         }
 
@@ -249,8 +246,8 @@ class TransactionController {
   }
 
   static getBetweenTwoDatesByType(req, res) {
-    let startDate = req.body.startDate;
-    let endDate = req.body.endDate;
+    let startDate = req.params.startDate;
+    let endDate = req.params.endDate;
     let userId = +req.params.UserId;
     let type = req.params.type;
 
@@ -322,18 +319,24 @@ class TransactionController {
     }
   }
   static async putOne(req, res) {
-    const { TransactionId } = +req.params;
+    // console.log(req.params, 'PARAMSS')
+    const TransactionId = +req.params.TransactionId;
+    // console.log(TransactionId, 'TRANSID')
     const { type, fullDate, receiptImage, category, notes } = req.body;
     const { amount, date, month, year } = +req.body;
+
     try {
-      const oldTransaction = await Transaction.findOne(TransactionId);
+      const oldTransaction = await Transaction.findOne({
+        where: { id: TransactionId },
+      });
       if (!oldTransaction)
         return res.status(400).json({ message: "Transaction not found" });
 
+      const UserId = oldTransaction.UserId;
+      const userInstance = await User.findOne({ where: { id: UserId } });
+
       if (amount) {
         // ? update balance
-        const UserId = oldTransaction.UserId;
-        const userInstance = await User.findOne(UserId);
         userInstance.balance =
           userInstance.balance - Number(oldTransaction.amount) + amount;
       }
@@ -366,16 +369,19 @@ class TransactionController {
       res.status(500).json({ message: error });
     }
   }
+
   static async deleteOne(req, res) {
-    const { TransactionId } = +req.params;
+    const TransactionId = +req.params.TransactionId;
     try {
-      const transactionInstance = await Transaction.findOne(TransactionId);
+      const transactionInstance = await Transaction.findOne({
+        where: { id: TransactionId },
+      });
       if (!transactionInstance)
         return res.status(400).json({ message: "Transaction not found" });
       const UserId = transactionInstance.UserId;
 
       // ? update balance
-      const userInstance = await User.findOne(UserId);
+      const userInstance = await User.findOne({ where: { id: UserId } });
       userInstance.balance += Number(transactionInstance.amount);
       userInstance.save();
 
@@ -391,15 +397,18 @@ class TransactionController {
       res.status(500).json({ message: error });
     }
   }
+
   static async getByTransactionId(req, res) {
     const { TransactionId } = req.params;
     try {
-      const transactionInstance = await Transaction.findOne(TransactionId);
+      const transactionInstance = await Transaction.findOne({
+        where: { id: TransactionId },
+      });
       if (!transactionInstance)
         return res.status(400).json({ message: "Transaction not found" });
       res.status(200).json(transactionInstance);
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(500).json({ message: error });
     }
   }

@@ -6,7 +6,7 @@ const imageKit = require("../middlewares/imageKit");
 const multer = require("multer");
 const upload = multer();
 
-router.get("/", Transaction.getAll);
+// router.get('/', Transaction.getAll)
 
 // for summary page
 router.get("/category/:UserId/:month", Transaction.getAllGroupedByCategory);
@@ -16,7 +16,10 @@ router.get("/date/:UserId/:month", Transaction.getAllGroupedByDate);
 router.get("/expense/:TransactionId", Transaction.getByTransactionId);
 
 // for analytics
-router.get("/between/:UserId/:type", Transaction.getBetweenTwoDatesByType);
+router.get(
+  "/between/:startDate/:endDate/:UserId/:type",
+  Transaction.getBetweenTwoDatesByType
+);
 router.get("/between/:UserId", Transaction.getBetweenTwoDates);
 
 // for summary page
