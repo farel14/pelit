@@ -65,7 +65,7 @@ class TransactionController {
 
   static getAllGroupedByCategory(req, res) {
     let userId = +req.params.UserId;
-    let monthNum = +req.params.category;
+    let monthNum = +req.params.month;
 
     Transaction.findAll({
       where: {

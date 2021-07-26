@@ -9,8 +9,8 @@ const upload = multer();
 router.get("/", Transaction.getAll);
 
 // for summary page
-router.get("/:UserId/:category", Transaction.getAllGroupedByCategory);
-router.get("/:UserId/:month", Transaction.getAllGroupedByDate);
+router.get("/category/:UserId/:month", Transaction.getAllGroupedByCategory);
+router.get("/date/:UserId/:month", Transaction.getAllGroupedByDate);
 
 // for edit page
 router.get("/expense/:TransactionId", Transaction.getByTransactionId);
