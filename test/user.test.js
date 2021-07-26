@@ -16,8 +16,6 @@ beforeAll(done => {
       let userId = user.id
       user_id = user.id
 
-      console.log('NEW USER', user)
-
       done()
   })
   .catch(err => {
@@ -43,7 +41,7 @@ describe("GET /user/:userId [SUCCESS CASE]", () => {
       .end((err, res) => {
         if (err) done(err);
         else {
-          console.log(user_id, 'USER ID')
+          // console.log(user_id, 'USER ID')
           expect(res.status).toBe(200);
           expect(res.body).toHaveProperty("fullName", expect.any(String));
           expect(res.body).toHaveProperty("email", expect.any(String));
