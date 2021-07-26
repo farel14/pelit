@@ -282,12 +282,15 @@ class TransactionController {
 
   static async postOne(req, res) {
     let UserId = req.params.UserId;
+    // console.log('USERID', UserId)
     let { type, fullDate, category, note, amount, title } = req.body;
+    // console.log('date', fullDate)
+    // console.log('urlImage', req.urlImage)
 
     const fullDateArr = fullDate.split("-");
     const year = fullDateArr[0];
     const month = fullDateArr[1];
-    const date = fullDateArr[2];
+    const date = fullDateArr[2].slice(0,2);
     try {
       const newData = await Transaction.create({
         UserId,
