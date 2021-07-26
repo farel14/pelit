@@ -261,6 +261,7 @@ class TransactionController {
           [Op.between]: [startDate, endDate],
         },
       },
+      order: ['fullDate']
     })
       .then((data) => {
         allTransactions = [...data];
