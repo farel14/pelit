@@ -3,6 +3,7 @@ const tesseract = require('../OCR')
 class OCRController {
     static postOcr(req, res) {
         const { imageUrl } = req.body
+        console.log(req.body)
 
         if (!imageUrl) return res.status(400).json({message: 'bad request'})
 
