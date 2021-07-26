@@ -238,8 +238,8 @@ class TransactionController {
   }
 
   static getBetweenTwoDatesByType(req, res) {
-    let startDate = req.body.startDate;
-    let endDate = req.body.endDate;
+    let startDate = req.params.startDate;
+    let endDate = req.params.endDate;
     let userId = +req.params.UserId;
     let type = req.params.type
 

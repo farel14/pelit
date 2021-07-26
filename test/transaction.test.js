@@ -201,8 +201,7 @@ describe('Get Transaction - SUCCESS', () => {
     })
     test('GET between two dates by type', (done) => {
         request(app)
-        .get(`/transactions/between/${user_id}/Expense`)
-        .send({startDate: '2021-07-20', endDate: '2021-08-20'})
+        .get(`/transactions/between/2021-07-20/2021-08-20/${user_id}/Expense`)
         .end((err, res) => {
             if (err) {
                 done(err)

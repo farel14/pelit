@@ -64,9 +64,9 @@ class Controller {
                 .then(target => {
                     res.status(200).json(target)
                 })
-                .catch(err => {
-                    res.status(500).json({message: err })
-                })
+                // .catch(err => {
+                //     res.status(500).json({message: err })
+                // })
             }
         })    
     }
@@ -90,9 +90,6 @@ class Controller {
         .then(() => {
             res.status(200).json(`Target successfully updated`)
         })
-        .catch(err => {
-            res.status(500).json({message: err })
-        })
     }
 
     static editActiveTargetStatusByUser(req, res) {
@@ -112,21 +109,21 @@ class Controller {
         })
     }
 
-    static deleteTargetById(req, res) {
-        let targetId = req.params.targetId
+    // static deleteTargetById(req, res) {
+    //     let targetId = req.params.targetId
 
-        Target.destroy({
-            where: {
-                id: targetId,
-              }
-        })
-        .then(() => {
-            res.status(200).json(`Target id ${targetId} successfully deleted`)
-        })
-        .catch(err => {
-            res.status(500).json({message: err })
-        })
-    }
+    //     Target.destroy({
+    //         where: {
+    //             id: targetId,
+    //           }
+    //     })
+    //     .then(() => {
+    //         res.status(200).json(`Target id ${targetId} successfully deleted`)
+    //     })
+    //     .catch(err => {
+    //         res.status(500).json({message: err })
+    //     })
+    // }
 }
 
 module.exports = Controller

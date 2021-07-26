@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1627273635927" clover="3.2.0">
-  <project timestamp="1627273635928" name="All files">
-    <metrics statements="505" coveredstatements="381" conditionals="71" coveredconditionals="31" methods="121" coveredmethods="79" elements="697" coveredelements="491" complexity="0" loc="505" ncloc="505" packages="7" files="33" classes="33"/>
+<coverage generated="1627274891983" clover="3.2.0">
+  <project timestamp="1627274891984" name="All files">
+    <metrics statements="526" coveredstatements="381" conditionals="83" coveredconditionals="31" methods="117" coveredmethods="79" elements="726" coveredelements="491" complexity="0" loc="526" ncloc="526" packages="7" files="33" classes="33"/>
     <package name="pelit-server">
       <metrics statements="12" coveredstatements="12" conditionals="4" coveredconditionals="3" methods="0" coveredmethods="0"/>
       <file name="app.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\app.js">
@@ -21,7 +21,7 @@
       </file>
     </package>
     <package name="pelit-server.OCR">
-      <metrics statements="26" coveredstatements="7" conditionals="2" coveredconditionals="0" methods="5" coveredmethods="0"/>
+      <metrics statements="52" coveredstatements="8" conditionals="12" coveredconditionals="0" methods="6" coveredmethods="0"/>
       <file name="index.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\OCR\index.js">
         <metrics statements="8" coveredstatements="3" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="7" type="stmt"/>
@@ -34,20 +34,45 @@
         <line num="10" count="0" type="stmt"/>
       </file>
       <file name="parser.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\OCR\parser.js">
-        <metrics statements="7" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
-        <line num="27" count="7" type="stmt"/>
-        <line num="32" count="0" type="stmt"/>
-        <line num="33" count="0" type="stmt"/>
-        <line num="34" count="0" type="stmt"/>
-        <line num="35" count="0" type="stmt"/>
-        <line num="36" count="0" type="stmt"/>
-        <line num="40" count="0" type="stmt"/>
+        <metrics statements="31" coveredstatements="3" conditionals="10" coveredconditionals="0" methods="3" coveredmethods="0"/>
+        <line num="42" count="7" type="stmt"/>
+        <line num="85" count="7" type="stmt"/>
+        <line num="89" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="94" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
+        <line num="106" count="0" type="stmt"/>
+        <line num="109" count="0" type="stmt"/>
+        <line num="112" count="0" type="stmt"/>
+        <line num="114" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="115" count="0" type="stmt"/>
+        <line num="116" count="0" type="stmt"/>
+        <line num="117" count="0" type="stmt"/>
+        <line num="118" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="119" count="0" type="stmt"/>
+        <line num="120" count="0" type="stmt"/>
+        <line num="121" count="0" type="stmt"/>
+        <line num="123" count="0" type="stmt"/>
+        <line num="124" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="126" count="0" type="stmt"/>
+        <line num="127" count="0" type="stmt"/>
+        <line num="131" count="0" type="stmt"/>
+        <line num="132" count="0" type="stmt"/>
+        <line num="133" count="0" type="stmt"/>
+        <line num="134" count="0" type="stmt"/>
+        <line num="137" count="0" type="stmt"/>
+        <line num="142" count="0" type="stmt"/>
+        <line num="154" count="7" type="stmt"/>
       </file>
       <file name="tesseract.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\OCR\tesseract.js">
-        <metrics statements="11" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
+        <metrics statements="13" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="0"/>
         <line num="1" count="7" type="stmt"/>
-        <line num="3" count="7" type="stmt"/>
-        <line num="5" count="7" type="stmt"/>
+        <line num="2" count="7" type="stmt"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
         <line num="6" count="0" type="stmt"/>
         <line num="7" count="0" type="stmt"/>
         <line num="8" count="0" type="stmt"/>
@@ -55,11 +80,12 @@
         <line num="10" count="0" type="stmt"/>
         <line num="11" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
-        <line num="16" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
       </file>
     </package>
     <package name="pelit-server.controllers">
-      <metrics statements="281" coveredstatements="200" conditionals="46" coveredconditionals="19" methods="83" coveredmethods="53"/>
+      <metrics statements="277" coveredstatements="200" conditionals="48" coveredconditionals="19" methods="78" coveredmethods="53"/>
       <file name="controllerAchievement.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\controllers\controllerAchievement.js">
         <metrics statements="14" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
         <line num="1" count="7" type="stmt"/>
@@ -90,7 +116,7 @@
         <line num="35" count="7" type="stmt"/>
       </file>
       <file name="controllerTarget.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\controllers\controllerTarget.js">
-        <metrics statements="41" coveredstatements="23" conditionals="2" coveredconditionals="2" methods="19" coveredmethods="9"/>
+        <metrics statements="35" coveredstatements="23" conditionals="2" coveredconditionals="2" methods="14" coveredmethods="9"/>
         <line num="1" count="7" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
@@ -112,7 +138,6 @@
         <line num="61" count="1" type="stmt"/>
         <line num="63" count="1" type="stmt"/>
         <line num="65" count="1" type="stmt"/>
-        <line num="68" count="0" type="stmt"/>
         <line num="75" count="0" type="stmt"/>
         <line num="77" count="0" type="stmt"/>
         <line num="78" count="0" type="stmt"/>
@@ -122,16 +147,11 @@
         <line num="82" count="0" type="stmt"/>
         <line num="84" count="0" type="stmt"/>
         <line num="91" count="0" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
-        <line num="99" count="1" type="stmt"/>
-        <line num="101" count="1" type="stmt"/>
-        <line num="108" count="1" type="stmt"/>
-        <line num="111" count="0" type="stmt"/>
-        <line num="116" count="0" type="stmt"/>
-        <line num="118" count="0" type="stmt"/>
-        <line num="124" count="0" type="stmt"/>
-        <line num="127" count="0" type="stmt"/>
-        <line num="132" count="7" type="stmt"/>
+        <line num="96" count="1" type="stmt"/>
+        <line num="98" count="1" type="stmt"/>
+        <line num="105" count="1" type="stmt"/>
+        <line num="108" count="0" type="stmt"/>
+        <line num="129" count="7" type="stmt"/>
       </file>
       <file name="loginController.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\controllers\loginController.js">
         <metrics statements="20" coveredstatements="14" conditionals="6" coveredconditionals="3" methods="3" coveredmethods="2"/>
@@ -157,14 +177,16 @@
         <line num="62" count="7" type="stmt"/>
       </file>
       <file name="ocrController.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\controllers\ocrController.js">
-        <metrics statements="7" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
+        <metrics statements="9" coveredstatements="2" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="1" count="7" type="stmt"/>
         <line num="5" count="0" type="stmt"/>
-        <line num="7" count="0" type="stmt"/>
-        <line num="9" count="0" type="stmt"/>
+        <line num="6" count="0" type="stmt"/>
+        <line num="8" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="10" count="0" type="stmt"/>
         <line num="12" count="0" type="stmt"/>
-        <line num="13" count="0" type="stmt"/>
-        <line num="21" count="7" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="24" count="7" type="stmt"/>
       </file>
       <file name="registerControlller.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\controllers\registerControlller.js">
         <metrics statements="10" coveredstatements="9" conditionals="4" coveredconditionals="3" methods="4" coveredmethods="4"/>
@@ -270,56 +292,56 @@
         <line num="271" count="1" type="stmt"/>
         <line num="276" count="0" type="stmt"/>
         <line num="281" count="1" type="stmt"/>
-        <line num="282" count="1" type="stmt"/>
-        <line num="284" count="1" type="stmt"/>
-        <line num="285" count="1" type="stmt"/>
-        <line num="286" count="1" type="stmt"/>
+        <line num="283" count="1" type="stmt"/>
         <line num="287" count="1" type="stmt"/>
         <line num="288" count="1" type="stmt"/>
         <line num="289" count="1" type="stmt"/>
-        <line num="303" count="1" type="stmt"/>
+        <line num="290" count="1" type="stmt"/>
+        <line num="291" count="1" type="stmt"/>
+        <line num="292" count="1" type="stmt"/>
         <line num="306" count="1" type="stmt"/>
-        <line num="308" count="0" type="stmt"/>
-        <line num="309" count="0" type="stmt"/>
-        <line num="314" count="1" type="stmt"/>
-        <line num="316" count="1" type="stmt"/>
+        <line num="309" count="1" type="stmt"/>
+        <line num="311" count="0" type="stmt"/>
+        <line num="312" count="0" type="stmt"/>
         <line num="317" count="1" type="stmt"/>
         <line num="319" count="1" type="stmt"/>
         <line num="320" count="1" type="stmt"/>
-        <line num="321" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="322" count="0" type="stmt"/>
-        <line num="324" count="1" type="stmt"/>
-        <line num="325" count="1" type="stmt"/>
-        <line num="327" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="329" count="0" type="stmt"/>
-        <line num="333" count="1" type="stmt"/>
-        <line num="351" count="1" type="stmt"/>
-        <line num="352" count="1" type="stmt"/>
+        <line num="322" count="1" type="stmt"/>
+        <line num="323" count="1" type="stmt"/>
+        <line num="324" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="325" count="0" type="stmt"/>
+        <line num="327" count="1" type="stmt"/>
+        <line num="328" count="1" type="stmt"/>
+        <line num="330" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="332" count="0" type="stmt"/>
+        <line num="336" count="1" type="stmt"/>
+        <line num="354" count="1" type="stmt"/>
         <line num="355" count="1" type="stmt"/>
-        <line num="357" count="0" type="stmt"/>
-        <line num="358" count="0" type="stmt"/>
-        <line num="363" count="1" type="stmt"/>
-        <line num="364" count="1" type="stmt"/>
-        <line num="365" count="1" type="stmt"/>
-        <line num="366" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="367" count="0" type="stmt"/>
+        <line num="358" count="1" type="stmt"/>
+        <line num="360" count="0" type="stmt"/>
+        <line num="361" count="0" type="stmt"/>
+        <line num="366" count="1" type="stmt"/>
+        <line num="367" count="1" type="stmt"/>
         <line num="368" count="1" type="stmt"/>
+        <line num="369" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="370" count="0" type="stmt"/>
         <line num="371" count="1" type="stmt"/>
-        <line num="372" count="1" type="stmt"/>
-        <line num="373" count="1" type="stmt"/>
+        <line num="374" count="1" type="stmt"/>
+        <line num="375" count="1" type="stmt"/>
         <line num="376" count="1" type="stmt"/>
-        <line num="378" count="1" type="stmt"/>
+        <line num="379" count="1" type="stmt"/>
         <line num="381" count="1" type="stmt"/>
-        <line num="383" count="0" type="stmt"/>
-        <line num="384" count="0" type="stmt"/>
-        <line num="389" count="1" type="stmt"/>
-        <line num="390" count="1" type="stmt"/>
-        <line num="391" count="1" type="stmt"/>
-        <line num="392" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="384" count="1" type="stmt"/>
+        <line num="386" count="0" type="stmt"/>
+        <line num="387" count="0" type="stmt"/>
+        <line num="392" count="1" type="stmt"/>
         <line num="393" count="1" type="stmt"/>
-        <line num="395" count="0" type="stmt"/>
-        <line num="396" count="0" type="stmt"/>
-        <line num="401" count="7" type="stmt"/>
+        <line num="394" count="1" type="stmt"/>
+        <line num="395" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="396" count="1" type="stmt"/>
+        <line num="398" count="0" type="stmt"/>
+        <line num="399" count="0" type="stmt"/>
+        <line num="404" count="7" type="stmt"/>
       </file>
       <file name="userController.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\controllers\userController.js">
         <metrics statements="41" coveredstatements="31" conditionals="4" coveredconditionals="1" methods="18" coveredmethods="12"/>
@@ -518,7 +540,7 @@
       </file>
     </package>
     <package name="pelit-server.routes">
-      <metrics statements="80" coveredstatements="80" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <metrics statements="79" coveredstatements="79" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="achievement.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\routes\achievement.js">
         <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="7" type="stmt"/>
@@ -582,7 +604,7 @@
         <line num="6" count="7" type="stmt"/>
       </file>
       <file name="target.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\routes\target.js">
-        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="7" type="stmt"/>
         <line num="2" count="7" type="stmt"/>
         <line num="3" count="7" type="stmt"/>
@@ -591,7 +613,6 @@
         <line num="7" count="7" type="stmt"/>
         <line num="9" count="7" type="stmt"/>
         <line num="10" count="7" type="stmt"/>
-        <line num="11" count="7" type="stmt"/>
         <line num="13" count="7" type="stmt"/>
       </file>
       <file name="transactions.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\routes\transactions.js">
@@ -610,9 +631,9 @@
         <line num="23" count="7" type="stmt"/>
         <line num="24" count="7" type="stmt"/>
         <line num="27" count="7" type="stmt"/>
-        <line num="33" count="7" type="stmt"/>
         <line num="34" count="7" type="stmt"/>
-        <line num="36" count="7" type="stmt"/>
+        <line num="35" count="7" type="stmt"/>
+        <line num="37" count="7" type="stmt"/>
       </file>
       <file name="userRouter.js" path="C:\Users\Galuh Alifani\Documents\Hacktiv8\Phase 3\pelit-server\routes\userRouter.js">
         <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>

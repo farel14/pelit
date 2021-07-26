@@ -16,7 +16,7 @@ router.get('/date/:UserId', Transaction.getAllGroupedByDate)
 router.get('/expense/:TransactionId', Transaction.getByTransactionId)
 
 // for analytics
-router.get('/between/:UserId/:type', Transaction.getBetweenTwoDatesByType)
+router.get('/between/:startDate/:endDate/:UserId/:type', Transaction.getBetweenTwoDatesByType)
 router.get('/between/:UserId', Transaction.getBetweenTwoDates)
 
 // for summary page
