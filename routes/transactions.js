@@ -6,22 +6,22 @@ const imageKit = require("../middlewares/imageKit");
 const multer = require("multer");
 const upload = multer();
 
-router.get('/', Transaction.getAll)
+router.get("/", Transaction.getAll);
 
 // for summary page
-router.get('/category/:UserId', Transaction.getAllGroupedByCategory)
-router.get('/date/:UserId', Transaction.getAllGroupedByDate)
+router.get("/:UserId/:category", Transaction.getAllGroupedByCategory);
+router.get("/:UserId/:month", Transaction.getAllGroupedByDate);
 
 // for edit page
-router.get('/expense/:TransactionId', Transaction.getByTransactionId)
+router.get("/expense/:TransactionId", Transaction.getByTransactionId);
 
 // for analytics
-router.get('/between/:UserId/:type', Transaction.getBetweenTwoDatesByType)
-router.get('/between/:UserId', Transaction.getBetweenTwoDates)
+router.get("/between/:UserId/:type", Transaction.getBetweenTwoDatesByType);
+router.get("/between/:UserId", Transaction.getBetweenTwoDates);
 
 // for summary page
-router.get('/:UserId/:type', Transaction.getByType) // by income / by expense for each userId in a specific month
-router.get('/:UserId', Transaction.getAllByUserId)
+router.get("/:UserId/:type", Transaction.getByType); // by income / by expense for each userId in a specific month
+router.get("/:UserId", Transaction.getAllByUserId);
 
 // for add/edit/delete
 router.post(
