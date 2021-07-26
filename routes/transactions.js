@@ -20,7 +20,10 @@ router.get(
   "/between/:startDate/:endDate/:UserId/:type",
   Transaction.getBetweenTwoDatesByType
 );
-router.get("/between/:UserId", Transaction.getBetweenTwoDates);
+router.get(
+  "/between/:startDate/:endDate/:UserId",
+  Transaction.getBetweenTwoDates
+);
 
 // for summary page
 router.get("/:UserId/:type", Transaction.getByType); // by income / by expense for each userId in a specific month
