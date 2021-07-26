@@ -6,7 +6,7 @@ const imageKit = require("../middlewares/imageKit");
 const multer = require("multer");
 const upload = multer();
 
-router.get('/', Transaction.getAll)
+// router.get('/', Transaction.getAll)
 
 // for summary page
 router.get('/category/:UserId', Transaction.getAllGroupedByCategory)
