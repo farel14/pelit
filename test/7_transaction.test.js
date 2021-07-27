@@ -16,7 +16,7 @@ let user = {
 
 let user_id;
 let transaction_id;
-let transactions = []
+let transactions = [];
 
 beforeAll((done) => {
   User.create({
@@ -28,7 +28,7 @@ beforeAll((done) => {
     .then((user) => {
       user_id = user.id;
 
-      for (let i = 0 ; i < 3; i++) {
+      for (let i = 0; i < 3; i++) {
         let trans = {};
         trans.UserId = user_id;
         trans.type = "Expense";
@@ -39,12 +39,12 @@ beforeAll((done) => {
         trans.receiptImage = "";
         trans.category = `Transportation`;
         trans.notes = "asdasdasd";
-        trans.title = `makanExpense${i}`;  
+        trans.title = `makanExpense${i}`;
 
-        transactions.push(trans)
+        transactions.push(trans);
       }
 
-      for (let i = 0 ; i < 3; i++) {
+      for (let i = 0; i < 3; i++) {
         let trans = {};
         trans.UserId = user_id;
         trans.type = "Income";
@@ -55,16 +55,15 @@ beforeAll((done) => {
         trans.receiptImage = "";
         trans.category = "Income";
         trans.notes = "asdasdasd";
-        trans.title = `makan${i}`;  
+        trans.title = `makan${i}`;
 
-        transactions.push(trans)
+        transactions.push(trans);
       }
 
       // console.log(transactions)
       return Transaction.bulkCreate(transactions);
     })
     .then((data) => {
-      console.log(data, 'SUCCESS CREATEs')
       transaction_id = data[0].id;
       done();
     })
@@ -255,20 +254,28 @@ describe("Get Transaction - SUCCESS", () => {
 
 describe("Add Transaction - SUCCESS", () => {
   test("POST transaction", (done) => {
-    let newTransaction = {};
-    let created = new Date();
-    newTransaction.UserId = user_id;
-    newTransaction.type = "Expense";
-    newTransaction.amount = -300000;
-    newTransaction.fullDate = "2021-07-23";
-    newTransaction.receiptImage = "";
-    newTransaction.category = "Food & Beverage";
-    newTransaction.notes = "asdasdasd";
-    newTransaction.title = "makan";
+    // let newTransaction = {};
+    // let created = new Date();
+    // newTransaction.UserId = UserId;
+    // newTransaction.type = "Expense";
+    // newTransaction.amount = -300000;
+    // newTransaction.fullDate = "2021-07-23";
+    // newTransaction.receiptImage = "";
+    // newTransaction.category = "Food & Beverage";
+    // newTransaction.notes = "asdasdasd";
+    // newTransaction.title = "makan";
 
     request(app)
       .post(`/transactions/${user_id}`)
-      .send(newTransaction)
+      // .send(newTransaction)
+      .field("UserId", user_id)
+      .field("type", "Expense")
+      .field("amount", -300000)
+      .field("fullDate", "2021-07-23")
+      .field("title", "makan")
+      .field("category", "Food & Beverage")
+      .field("notes", "asdasdasd")
+      .attach("receiptImage", "./image/contoh-resi-jnt-express.jpg")
       .end((err, res) => {
         if (err) {
           done(err);

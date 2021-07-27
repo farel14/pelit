@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('Users', 'pushToken', Sequelize.STRING)
+    return queryInterface.addColumn("Users", "pushToken", Sequelize.STRING);
     /**
      * Add altering commands here.
      *
@@ -12,12 +12,12 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('Users', 'pushToken', Sequelize.STRING)
+    return queryInterface.removeColumn("Users", "pushToken", Sequelize.STRING);
     /**
      * Add reverting commands here.
      *
      * Example:
      * await queryInterface.dropTable('users');
      */
-  }
+  },
 };
