@@ -29,6 +29,7 @@ class UserController {
             balance: user.balance,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt,
+            pushToken: user.pushToken,
             Badges: user.Badges,
             Targets: user.Targets,
             Transactions: {
