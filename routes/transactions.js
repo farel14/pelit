@@ -7,6 +7,7 @@ const multer = require("multer");
 const upload = multer();
 
 // router.get('/', Transaction.getAll)
+//
 
 // for summary page
 router.get("/category/:UserId/:month", Transaction.getAllGroupedByCategory);
@@ -36,10 +37,12 @@ router.post(
   imageKit,
   Transaction.postOne
 );
-router.put("/:TransactionId",
-  upload.single("receiptImage"),
-  imageKit,
-  Transaction.putOne);
+router.put(
+  "/:TransactionId",
+  // upload.single("receiptImage"),
+  // imageKit,
+  Transaction.putOne
+);
 router.delete("/:TransactionId", Transaction.deleteOne);
 
 module.exports = router;
