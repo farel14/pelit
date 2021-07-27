@@ -1,4 +1,4 @@
-const axios = require("axios").default;
+const axios = require("axios")
 const FormData = require("form-data");
 const Buffer = require("buffer").Buffer;
 
