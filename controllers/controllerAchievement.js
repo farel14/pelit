@@ -24,7 +24,7 @@ class Controller {
             res.status(200).json(achievement)
         })
         .catch(err => {
-            res.status(500).json({message: err })
+            // res.status(500).json({message: err })
         })
     }
 
@@ -129,16 +129,14 @@ class Controller {
                                             }
                                         })
                                     })
-                                    if (i == achievements.length - 1) {
-                                        // res.status(200).json(newAchievements)
-                                        console.log('Success!')
-                                        console.log(newAchievements, 'SUCCESS')
-                                    }
+                                    // if (i == achievements.length - 1) {
+                                    //     console.log('Success!')
+                                    //     console.log(newAchievements, 'SUCCESS')
+                                    // }
                                 })
-                                .catch(err => {
-                                    // res.status(500).json({message: err })
-                                    console.log(err, 'error')
-                                })    
+                                // .catch(err => {
+                                //     console.log(err, 'error')
+                                // })    
                             }
                         }
                     })

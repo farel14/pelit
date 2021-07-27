@@ -16,6 +16,7 @@ let user = {
 
 let user_id;
 let transaction_id;
+let transactions = []
 
 beforeAll((done) => {
   User.create({
@@ -27,20 +28,44 @@ beforeAll((done) => {
     .then((user) => {
       user_id = user.id;
 
-      let trans = {};
-      trans.UserId = user_id;
-      trans.type = "Expense";
-      trans.amount = -300000;
-      trans.fullDate = "2021-07-23";
-      trans.receiptImage = "";
-      trans.category = "Transportation";
-      trans.notes = "asdasdasd";
-      trans.title = "makan";
+      for (let i = 0 ; i < 3; i++) {
+        let trans = {};
+        trans.UserId = user_id;
+        trans.type = "Expense";
+        trans.amount = 300000;
+        trans.fullDate = "2021-07-23";
+        trans.month = 7;
+        trans.date = 23;
+        trans.receiptImage = "";
+        trans.category = `Transportation`;
+        trans.notes = "asdasdasd";
+        trans.title = `makanExpense${i}`;  
 
-      return Transaction.create(trans);
+        transactions.push(trans)
+      }
+
+      for (let i = 0 ; i < 3; i++) {
+        let trans = {};
+        trans.UserId = user_id;
+        trans.type = "Income";
+        trans.amount = 200000;
+        trans.fullDate = "2021-07-23";
+        trans.month = 7;
+        trans.date = 23;
+        trans.receiptImage = "";
+        trans.category = "Income";
+        trans.notes = "asdasdasd";
+        trans.title = `makan${i}`;  
+
+        transactions.push(trans)
+      }
+
+      // console.log(transactions)
+      return Transaction.bulkCreate(transactions);
     })
     .then((data) => {
-      transaction_id = data.id;
+      console.log(data, 'SUCCESS CREATEs')
+      transaction_id = data[0].id;
       done();
     })
     .catch((err) => {
@@ -59,40 +84,6 @@ afterAll((done) => {
     .catch((err) => {
       done(err);
     });
-});
-
-describe("Add Transaction - SUCCESS", () => {
-  test("POST transaction", (done) => {
-    let newTransaction = {};
-    let created = new Date();
-    newTransaction.UserId = user_id;
-    newTransaction.type = "Expense";
-    newTransaction.amount = -300000;
-    newTransaction.fullDate = "2021-07-23";
-    newTransaction.receiptImage = "";
-    newTransaction.category = "Food & Beverage";
-    newTransaction.notes = "asdasdasd";
-    newTransaction.title = "makan";
-
-    request(app)
-      .post(`/transactions/${user_id}`)
-      .send(newTransaction)
-      .end((err, res) => {
-        if (err) {
-          done(err);
-        } else {
-          // console.log(res.body, 'BODY')
-          expect(res.status).toBe(201);
-          expect(res.body.UserId).toBe(user_id);
-          expect(res.body).toHaveProperty("type", expect.any(String));
-          expect(res.body).toHaveProperty("category", expect.any(String));
-          expect(res.body).toHaveProperty("amount", expect.any(Number));
-          expect(res.body).toHaveProperty("month", expect.any(Number));
-          expect(res.body).toHaveProperty("year", expect.any(Number));
-          done();
-        }
-      });
-  });
 });
 
 describe("Get Transaction - SUCCESS", () => {
@@ -115,7 +106,6 @@ describe("Get Transaction - SUCCESS", () => {
   test("GET by date", (done) => {
     request(app)
       .get(`/transactions/date/${user_id}/7`)
-      .send({ month: 7 })
       .end((err, res) => {
         if (err) {
           done(err);
@@ -257,6 +247,40 @@ describe("Get Transaction - SUCCESS", () => {
         } else {
           expect(res.status).toBe(200);
           expect(res.body).toHaveProperty("status", expect.any(String));
+          done();
+        }
+      });
+  });
+});
+
+describe("Add Transaction - SUCCESS", () => {
+  test("POST transaction", (done) => {
+    let newTransaction = {};
+    let created = new Date();
+    newTransaction.UserId = user_id;
+    newTransaction.type = "Expense";
+    newTransaction.amount = -300000;
+    newTransaction.fullDate = "2021-07-23";
+    newTransaction.receiptImage = "";
+    newTransaction.category = "Food & Beverage";
+    newTransaction.notes = "asdasdasd";
+    newTransaction.title = "makan";
+
+    request(app)
+      .post(`/transactions/${user_id}`)
+      .send(newTransaction)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          // console.log(res.body, 'BODY')
+          expect(res.status).toBe(201);
+          expect(res.body.UserId).toBe(user_id);
+          expect(res.body).toHaveProperty("type", expect.any(String));
+          expect(res.body).toHaveProperty("category", expect.any(String));
+          expect(res.body).toHaveProperty("amount", expect.any(Number));
+          expect(res.body).toHaveProperty("month", expect.any(Number));
+          expect(res.body).toHaveProperty("year", expect.any(Number));
           done();
         }
       });
