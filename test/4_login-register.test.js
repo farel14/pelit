@@ -21,17 +21,32 @@ beforeAll((done) => {
     .then((user) => {
       user_id = user.id;
 
+      let allTrans = []
+
       let trans = {};
       trans.UserId = user_id;
       trans.type = "Expense";
-      trans.amount = -300000;
+      trans.amount = 300000;
       trans.fullDate = "2021-07-23";
       trans.receiptImage = "";
       trans.category = "Transportation";
       trans.notes = "asdasdasd";
       trans.title = "makan";
 
-      return Transaction.create(trans);
+      let trans2 = {};
+      trans2.UserId = user_id;
+      trans2.type = "Income";
+      trans2.amount = 300000;
+      trans2.fullDate = "2021-07-23";
+      trans2.receiptImage = "";
+      trans2.category = "Other Income";
+      trans2.notes = "asdasdasd";
+      trans2.title = "makan";
+
+      allTrans.push(trans)
+      allTrans.push(trans2)
+
+      return Transaction.bulkCreate(allTrans);
     })
     .then((data) => {
       transaction_id = data.id;
@@ -59,7 +74,7 @@ beforeAll((done) => {
 
 if (process.env.NODE_ENV == "test") {
   afterAll((done) => {
-    User.destroy({ truncate: { cascade: true } })
+    User.destroy({ truncate : true, cascade: true })
       .then(() => {
         done();
       })

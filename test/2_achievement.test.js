@@ -9,31 +9,12 @@ let user = {
     password: "password123"
 }
 
-let badgesId = []
 let user_id;
 
 beforeAll(done => {
     User.create({...user, fullName: 'Test User', photoProfile: '', balance: 2000000}) // create user
     .then(user => {
         user_id = user.id
-    
-        let newBadges = []
-
-        for (let i = 0; i < 5; i++) {
-            let badge = {}
-            badge.name = `Badge ${i}`
-            badge.description = `This is bagde ${i}`
-            badge.imgUrl = `ImageLink badge ${i}`
-
-            newBadges.push(badge)
-        }
-
-        return Badge.bulkCreate(newBadges) // create badges
-    })
-    .then(badges => {    
-        for (let i = 0; i < badges.length; i++) {
-            badgesId.push(badges[i].id)
-        }
         // console.log(badges, 'BADGES!')
         done()
     })
@@ -47,9 +28,6 @@ beforeAll(done => {
 afterAll(done => {
     User.destroy({ truncate: true, cascade: true})
     .then(() => {
-        return Badge.destroy({ truncate: true, cascade: true})
-    })
-    .then(() => {
         done()
     })
     .catch(err => {
@@ -59,8 +37,7 @@ afterAll(done => {
 
 describe('Post Achievement - SUCCESS', () => {
     test('Success add new achievement', (done) => {
-        let index = Math.floor(Math.random()*5)
-        let badge_id = badgesId[index]
+        let badge_id = 2
 
         let newAchievement = {}
         let created = new Date()

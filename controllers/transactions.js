@@ -74,13 +74,13 @@ class TransactionController {
       order: ["category"],
     })
       .then((data) => {
+        console.log(data, 'DATA')
         let group = [];
         let flag = true;
-        console.log(data);
         data.forEach((ele) => {
           ele.type === "Expense" ? (ele.amount *= -1) : null;
-          console.log(group, "ini group");
           if (group.length > 0) {
+            console.log('MASUK GROUP 0')
             for (let i = 0; i < group.length; i++) {
               console.log(group[i].category, "ini goup category");
               if (group[i].category == ele.category) {
@@ -106,11 +106,11 @@ class TransactionController {
               }
             }
           } else {
-            console.log(group, "group di dalam baris 109");
             flag = false;
           }
 
           if (flag == false) {
+            console.log('MASUK FLAG FALSE')
             group.push({
               category: ele.category,
               total: ele.amount,

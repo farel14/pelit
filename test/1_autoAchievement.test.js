@@ -12,7 +12,7 @@ const { autoAchievement } = require('../controllers/controllerAchievement');
 const Controller = require('../controllers/controllerAchievement')
 // const {jest} = require ('@jest/globals')
 const consoleSpy = jest.spyOn(console, 'log').mockImplementation()
-
+const log = console.log;
 let user = {
     email: "test@email.com",
     password: "password123"
@@ -31,11 +31,12 @@ beforeAll(done => {
         let target = {}
         target.UserId = user_id
         target.startDate = new Date('2021-01-01')
-        target.endDate = sqlDateFormat(thirtyDaysFromNow(target.startDate, 30))
-        target.monthlyTarget = randomIntFromInterval(5000000, 20000000)
+        target.endDate = new Date('2021-01-31')
+        target.monthlyTarget = 100000
         target.isActive = true
 
         console.log(target)
+        console.log(user)
 
         return Target.create(target)
     })
@@ -43,7 +44,7 @@ beforeAll(done => {
         let trans = {}
         trans.UserId = user_id
         trans.type = 'Expense'
-        trans.amount = 300000
+        trans.amount = 1000000
         trans.fullDate = '2021-01-15'
         trans.receiptImage = ''
         trans.category = 'Transportation'
@@ -63,10 +64,11 @@ beforeAll(done => {
 
 
 afterAll(done => {
-    User.destroy({ truncate: true, cascade: true})
-    .then(() => {
-        return Target.destroy({ truncate: true, cascade: true})
-    })
+    // sequelize.truncate()
+    Target.destroy({ truncate: true, cascade: true})
+    // .then(() => {
+    //     return Target.destroy({ truncate: true, cascade: true})
+    // })
     .then(() => {
         return Transaction.destroy({ truncate: true, cascade: true})
     })
@@ -79,19 +81,13 @@ afterAll(done => {
 })
 
 describe('Auto Achievement - SUCCESS', () => {
-    const log = console.log; // save original console.log function
-    beforeEach(() => {
-        consoleSpy.mockClear()
+    it.only('Success run new achievement', async () => {
+        jest.setTimeout(300000);
+        const spy = jest.spyOn(console, 'log')
+      
+        await autoAchievement();
+      
+        expect(spy).toHaveBeenCalled()
+        spy.mockRestore()
       })
-    afterAll(() => {
-        console.log = log; // restore original console.log after all tests
-    });
-    test('Success run new achievement', (done) => {
-        expect(console.log.mock.calls.length).toBe(0);
-        autoAchievement();
-        expect(console.log).toHaveBeenCalled();
-        // expect(console.log.mock.calls.length).toBe(2);
-        // expect(console.log.mock.calls[0][0]).toBe("Hello World")
-        done()
-    })
 })
