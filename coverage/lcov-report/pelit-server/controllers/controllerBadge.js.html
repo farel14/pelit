@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.78% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>7/9</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.78% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>7/9</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -91,7 +91,8 @@
 <a name='L32'></a><a href='#L32'>32</a>
 <a name='L33'></a><a href='#L33'>33</a>
 <a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">7x</span>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -103,15 +104,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -119,54 +111,65 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span></td><td class="text"><pre class="prettyprint lang-js">const { Badge, User } = require('../models')
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { Badge, User } = require("../models");
 &nbsp;
 class Controller {
-    static getAllBadges(req, res) {
-        Badge.findAll({
-            include: [User],
-            order: ['id']
-        })
-        .then(badges =&gt; {
-            res.status(200).json(badges)
-        })
-        .catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {
-<span class="cstat-no" title="statement not covered" >            res.status(500).json({message: err })</span>
-        })
-    }
+  static getAllBadges(req, res) {
+    Badge.findAll({
+      include: [User],
+      order: ["id"],
+    })
+      .then((badges) =&gt; {
+        res.status(200).json(badges);
+      })
+      .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
+        // res.status(500).json({ message: err });
+      });
+  }
 &nbsp;
-    static getBadgeById(req, res) {
-        let badgeId = req.params.badgeId
+  static getBadgeById(req, res) {
+    let badgeId = req.params.badgeId;
 &nbsp;
-        Badge.findAll({
-            where: {
-                id: badgeId
-              },
-            include: [User]
-        })
-        .then(badge =&gt; {
-            res.status(200).json(badge[0])
-        })
-        .catch(<span class="fstat-no" title="function not covered" >er</span>r =&gt; {
-<span class="cstat-no" title="statement not covered" >            res.status(500).json({message: err })</span>
-        })
-    }
+    Badge.findAll({
+      where: {
+        id: badgeId,
+      },
+      include: [User],
+    })
+      .then((badge) =&gt; {
+        res.status(200).json(badge[0]);
+      })
+      .catch(<span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {
+        // res.status(500).json({message: err })
+      });
+  }
 }
 &nbsp;
-module.exports = Controller</pre></td></tr></table></pre>
+module.exports = Controller;
+&nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Jul 27 2021 13:10:13 GMT+0700 (Western Indonesia Time)
+                at Tue Jul 27 2021 13:15:24 GMT+0700 (Western Indonesia Time)
             </div>
         </div>
         <script src="../../prettify.js"></script>

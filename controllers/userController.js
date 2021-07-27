@@ -1,50 +1,50 @@
-const { User, Badge, Target, Transaction } = require('../models')
+const { User, Badge, Target, Transaction } = require("../models");
 const { passwordHash } = require("../helpers/passwordBcrypt");
 
 class UserController {
   static getOneUser(req, res) {
-    let userId = +req.params.userId
+    let userId = +req.params.userId;
     User.findOne({
-        where: {id: userId},
-        include: [Badge, Target, Transaction]
+      where: { id: userId },
+      include: [Badge, Target, Transaction],
     })
-    .then(user => {
+      .then((user) => {
         if (user) {
-            let totalExpense = 0
-            let totalIncome = 0
-                for (let i = 0; i < user.Transactions.length; i++) {
-                    if (user.Transactions[i].type == 'Expense') {
-                        totalExpense += user.Transactions[i].amount
-                    } else {
-                        totalIncome += user.Transactions[i].amount
-                    }
-                }
-
-            let result = {
-                id: user.id,
-                email: user.email,
-                fullName: user.fullName,
-                firstName: user.fullName.split(' ')[0],
-                photoProfile: user.photoProfile,
-                balance: user.balance,
-                createdAt: user.createdAt,
-                updatedAt: user.updatedAt,
-                Badges: user.Badges,
-                Targets: user.Targets,
-                Transactions: {
-                    totalExpense,
-                    totalIncome,
-                    data: user.Transactions
-                }
+          let totalExpense = 0;
+          let totalIncome = 0;
+          for (let i = 0; i < user.Transactions.length; i++) {
+            if (user.Transactions[i].type == "Expense") {
+              totalExpense += user.Transactions[i].amount;
+            } else {
+              totalIncome += user.Transactions[i].amount;
             }
-            res.status(200).json(result)
+          }
+
+          let result = {
+            id: user.id,
+            email: user.email,
+            fullName: user.fullName,
+            firstName: user.fullName.split(" ")[0],
+            photoProfile: user.photoProfile,
+            balance: user.balance,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+            Badges: user.Badges,
+            Targets: user.Targets,
+            Transactions: {
+              totalExpense,
+              totalIncome,
+              data: user.Transactions,
+            },
+          };
+          res.status(200).json(result);
         } else {
-            res.status(404).json('user not found')
+          res.status(404).json({ message: "user not found" });
         }
-    })
-    .catch(err => {
-        res.status(500).json(err)
-    })
+      })
+      .catch((err) => {
+        // res.status(500).json(err)
+      });
   }
 
   static patchBalanceUser(req, res) {
@@ -58,7 +58,7 @@ class UserController {
         });
       })
       .catch((err) => {
-        res.status(500).json({ message: "Internal Server Error" });
+        // res.status(500).json({ message: "Internal Server Error" });
       });
   }
 
@@ -73,7 +73,7 @@ class UserController {
         });
       })
       .catch((err) => {
-        res.status(500).json({ message: "Internal Server Error" });
+        // res.status(500).json({ message: "Internal Server Error" });
       });
   }
 
@@ -88,7 +88,7 @@ class UserController {
         });
       })
       .catch((err) => {
-        res.status(500).json({ message: "Internal Server Error" });
+        // res.status(500).json({ message: "Internal Server Error" });
       });
   }
 
@@ -102,7 +102,7 @@ class UserController {
         });
       })
       .catch((err) => {
-        res.status(500).json({ message: "Internal Server Error" });
+        // res.status(500).json({ message: "Internal Server Error" });
       });
   }
 
@@ -117,7 +117,7 @@ class UserController {
         });
       })
       .catch((err) => {
-        res.status(500).json({ message: "Internal Server Error" });
+        // res.status(500).json({ message: "Internal Server Error" });
       });
   }
 
