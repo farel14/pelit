@@ -120,6 +120,17 @@ class UserController {
         // res.status(500).json({ message: "Internal Server Error" });
       });
   }
+
+  static patchPushTokenUser(req, res) {
+    const {pushToken} = req.body
+    const id = req.params.userId;
+    User.update({ pushToken }, { where: { id } })
+    .then(() => {
+      res.status(200).json({
+        message: "Updated pushToken"
+      })
+    })
+  }
 }
 
 module.exports = UserController;
