@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "jest --detectOpenHandles --forceExit",
+    "test": "jest --detectOpenHandles --forceExit --runInBand",
     "dev": "nodemon bin/http",
     "start": "node bin/http",
     "seeder": "SET NODE_ENV=development&&npx sequelize db:seed --seed",

@@ -290,11 +290,13 @@ class TransactionController {
     let UserId = req.params.UserId;
     let { type, fullDate, category, note, amount, title } = req.body;
     try {
+      res.status(200).json({message: fullDate})
+      return
 
-    const fullDateArr = fullDate.split("-");
-    const year = fullDateArr[0];
-    const month = fullDateArr[1];
-    const date = fullDateArr[2].substring(0,2);
+      const fullDateArr = fullDate.split("-");
+      const year = fullDateArr[0];
+      const month = fullDateArr[1];
+      const date = fullDateArr[2].substring(0, 2);
       const newData = await Transaction.create({
         UserId,
         type,
@@ -317,15 +319,16 @@ class TransactionController {
       res.status(500).json({ message: error });
     }
   }
+
   static async putOne(req, res) {
     const { TransactionId } = +req.params;
-    const { type, fulldate:fullDate, receiptImage, category, notes } = req.body;
+    const { type, fulldate: fullDate, receiptImage, category, notes } = req.body;
     const { amount } = +req.body;
 
     const fullDateArr = fullDate.split("-");
     const year = fullDateArr[0];
     const month = fullDateArr[1];
-    const date = fullDateArr[2].substring(0,2);
+    const date = fullDateArr[2].substring(0, 2);
 
     try {
       const oldTransaction = await Transaction.findOne({
