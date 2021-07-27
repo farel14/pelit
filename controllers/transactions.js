@@ -290,9 +290,6 @@ class TransactionController {
     let UserId = req.params.UserId;
     let { type, fullDate, category, note, amount, title } = req.body;
     try {
-      res.status(200).json({message: {fullDate, fulldate: req.body.fulldate}})
-      return
-
       const fullDateArr = fullDate.split("-");
       const year = fullDateArr[0];
       const month = fullDateArr[1];
