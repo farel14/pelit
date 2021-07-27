@@ -28,7 +28,6 @@ router.post(
   "/:UserId",
   upload.single("receiptImage"),
   imageKit,
-  // tesseractMiddleware
   Transaction.postOne
 );
 router.put("/:TransactionId", Transaction.putOne);
