@@ -319,7 +319,7 @@ class TransactionController {
 
   static async putOne(req, res) {
     const { TransactionId } = +req.params;
-    const { type, fulldate: fullDate, receiptImage, category, note } = req.body;
+    const { type, fullDate, receiptImage, category, note } = req.body;
     const { amount } = +req.body;
 
     const fullDateArr = fullDate.split("-");
