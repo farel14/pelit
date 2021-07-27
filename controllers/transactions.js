@@ -107,7 +107,6 @@ class TransactionController {
           }
 
           if (flag == false) {
-            console.log("MASUK FLAG FALSE");
             group.push({
               category: ele.category,
               total: ele.amount,
@@ -132,7 +131,6 @@ class TransactionController {
           }
           return ele;
         });
-        console.log(group, "ini group baris 136");
         res.status(200).json(group);
       })
       .catch((err) => {
@@ -318,14 +316,11 @@ class TransactionController {
     }
   }
   static async putOne(req, res) {
-    const { TransactionId } = +req.params;
-    const { type, fullDate, receiptImage, category, note } = req.body;
-    const { amount } = +req.body;
-
-    const fullDateArr = fullDate.split("-");
-    const year = fullDateArr[0];
-    const month = fullDateArr[1];
-    const date = fullDateArr[2].substring(0, 2);
+    // console.log(req.params, 'PARAMSS')
+    const TransactionId = +req.params.TransactionId;
+    // console.log(TransactionId, 'TRANSID')
+    const { type, fullDate, receiptImage, category, notes } = req.body;
+    const { amount, date, month, year } = +req.body;
 
     try {
       const oldTransaction = await Transaction.findOne({
@@ -352,7 +347,7 @@ class TransactionController {
           year,
           receiptImage,
           category,
-          note,
+          notes,
         },
         {
           where: {
