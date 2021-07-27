@@ -1,38 +1,74 @@
 const request = require("supertest");
 const app = require("../app");
-const { User } = require("../models");
+const { User, Transaction } = require("../models");
 
 let user = {
   email: "test@email.com",
-  password: "password123"
-}
+  password: "password123",
+};
 
-let targets = []
+let targets = [];
 let user_id;
+let transaction_id;
 
-beforeAll(done => {
-  User.create({...user, fullName: 'Test User', photoProfile: '', balance: 2000000}) // create user
-  .then(user => {
-      let userId = user.id
-      user_id = user.id
+beforeAll((done) => {
+  User.create({
+    ...user,
+    fullName: "Test User",
+    photoProfile: "",
+    balance: 2000000,
+  }) // create user
+    .then((user) => {
+      user_id = user.id;
 
-      done()
-  })
-  .catch(err => {
+      let trans = {};
+      trans.UserId = user_id;
+      trans.type = "Expense";
+      trans.amount = -300000;
+      trans.fullDate = "2021-07-23";
+      trans.receiptImage = "";
+      trans.category = "Transportation";
+      trans.notes = "asdasdasd";
+      trans.title = "makan";
+
+      return Transaction.create(trans);
+    })
+    .then((data) => {
+      transaction_id = data.id;
+
+      let trans = {};
+      trans.UserId = user_id;
+      trans.type = "Income";
+      trans.amount = -300000;
+      trans.fullDate = "2021-07-23";
+      trans.receiptImage = "";
+      trans.category = "Transportation";
+      trans.notes = "asdasdasd";
+      trans.title = "makan";
+
+      return Transaction.create(trans);
+    })
+    .then(() => {
+      done();
+    })
+    .catch((err) => {
       // console.log('ERRRRRORRR CREATE USER')
-      done(err)
-  })
-})
+      done(err);
+    });
+});
 
-afterAll(done => {
-  User.destroy({ truncate: true, cascade: true})
-  .then(() => {
-      done()
-  })
-  .catch(err => {
-      done(err)
-  })
-})
+afterAll((done) => {
+  User.destroy({ truncate: true, cascade: true })
+    .then(() => {
+      return Transaction.destroy({ truncate: true, cascade: true });
+    })
+    .then(() => {
+      done();
+    })
+    .catch((err) => {
+      done(err);
+    });
+});
 
 describe("GET /user/:userId [SUCCESS CASE]", () => {
   test("Shoud send a object with key: fullName, email, photoProfile, balance and id", (done) => {
@@ -48,6 +84,21 @@ describe("GET /user/:userId [SUCCESS CASE]", () => {
           expect(res.body).toHaveProperty("photoProfile", expect.any(String));
           expect(res.body).toHaveProperty("balance", expect.any(Number));
           expect(res.body).toHaveProperty("id", expect.any(Number));
+          done();
+        }
+      });
+  });
+});
+
+describe("GET /user/:userId [ERROR CASE]", () => {
+  test("Shoud send a object with key: message", (done) => {
+    request(app)
+      .get(`/user/1000`)
+      .end((err, res) => {
+        if (err) done(err);
+        else {
+          expect(res.status).toBe(404);
+          expect(res.body).toHaveProperty("message", "user not found");
           done();
         }
       });
@@ -150,7 +201,28 @@ describe("PATCH /user/full-name/:userId [SUCCESS CASE]", () => {
         fullName: "Baba Dadak",
       })
       .end((err, res) => {
-        console.log(res.bod);
+        if (err) done(err);
+        else {
+          expect(res.status).toBe(200);
+          expect(res.body).toHaveProperty(
+            "message",
+            "Full name has been updated successfully"
+          );
+          expect(res.body).toHaveProperty("fullName", expect.any(String));
+          done();
+        }
+      });
+  });
+});
+
+describe("PATCH /user/full-name/:userId [SUCCESS CASE]", () => {
+  test("Shoud send a object with key: message and full name", (done) => {
+    request(app)
+      .patch(`/user/full-name/${user_id}`)
+      .send({
+        fullName: "Baba Dadak",
+      })
+      .end((err, res) => {
         if (err) done(err);
         else {
           expect(res.status).toBe(200);

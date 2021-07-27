@@ -28,7 +28,7 @@ class TransactionController {
         res.status(200).json(data);
       })
       .catch((err) => {
-        res.status(500).json({ message: err });
+        // res.status(500).json({ message: err });
       });
   }
 
@@ -58,7 +58,7 @@ class TransactionController {
         res.status(200).json({ total, data });
       })
       .catch((err) => {
-        res.status(500).json({ message: err });
+        // res.status(500).json({ message: err });
       });
   }
 
@@ -76,10 +76,13 @@ class TransactionController {
       .then((data) => {
         let group = [];
         let flag = true;
+        console.log(data);
         data.forEach((ele) => {
           ele.type === "Expense" ? (ele.amount *= -1) : null;
+          console.log(group, "ini group");
           if (group.length > 0) {
             for (let i = 0; i < group.length; i++) {
+              console.log(group[i].category, "ini goup category");
               if (group[i].category == ele.category) {
                 flag = true;
                 group[i].total += ele.amount;
@@ -103,6 +106,7 @@ class TransactionController {
               }
             }
           } else {
+            console.log(group, "group di dalam baris 109");
             flag = false;
           }
 
@@ -131,10 +135,11 @@ class TransactionController {
           }
           return ele;
         });
+        console.log(group, "ini group baris 136");
         res.status(200).json(group);
       })
       .catch((err) => {
-        res.status(500).json({ message: err });
+        // res.status(500).json({ message: err });
       });
   }
 
@@ -206,8 +211,7 @@ class TransactionController {
         res.status(200).json(group);
       })
       .catch((err) => {
-        console.log(err);
-        res.status(500).json({ message: err });
+        // res.status(500).json({ message: err });
       });
   }
 
@@ -241,7 +245,7 @@ class TransactionController {
         res.status(200).json({ total: output, data: allTransactions });
       })
       .catch((err) => {
-        res.status(500).json({ message: err });
+        // res.status(500).json({ message: err });
       });
   }
 
@@ -261,7 +265,7 @@ class TransactionController {
           [Op.between]: [startDate, endDate],
         },
       },
-      order: ['fullDate']
+      order: ["fullDate"],
     })
       .then((data) => {
         allTransactions = [...data];
@@ -271,16 +275,14 @@ class TransactionController {
         });
 
         let output = 0;
-        console.log(allTransactions.length);
         for (let i = 0; i < allTransactions.length; i++) {
-          console.log(allTransactions[i].amount);
           output += allTransactions[i].amount;
         }
 
         res.status(200).json({ total: output, data: allTransactions });
       })
       .catch((err) => {
-        res.status(500).json({ message: err });
+        // res.status(500).json({ message: err });
       });
   }
 
@@ -315,8 +317,7 @@ class TransactionController {
       });
       res.status(201).json(newData);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: error });
+      // res.status(500).json({ message: error });
     }
   }
   static async putOne(req, res) {
@@ -366,8 +367,7 @@ class TransactionController {
       });
       res.status(200).json({ status: "success" });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: error });
+      // res.status(500).json({ message: error });
     }
   }
 
@@ -394,8 +394,7 @@ class TransactionController {
       });
       res.status(200).json({ status: "success" });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: error });
+      // res.status(500).json({ message: error });
     }
   }
 
@@ -409,8 +408,7 @@ class TransactionController {
         return res.status(400).json({ message: "Transaction not found" });
       res.status(200).json(transactionInstance);
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: error });
+      // res.status(500).json({ message: error });
     }
   }
 }
