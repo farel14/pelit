@@ -28,7 +28,7 @@ class TransactionController {
         res.status(200).json(data);
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -58,7 +58,7 @@ class TransactionController {
         res.status(200).json({ total, data });
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -139,7 +139,7 @@ class TransactionController {
         res.status(200).json(group);
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -211,7 +211,7 @@ class TransactionController {
         res.status(200).json(group);
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -245,7 +245,7 @@ class TransactionController {
         res.status(200).json({ total: output, data: allTransactions });
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -282,22 +282,18 @@ class TransactionController {
         res.status(200).json({ total: output, data: allTransactions });
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
   static async postOne(req, res) {
     let UserId = req.params.UserId;
-    // console.log('USERID', UserId)
     let { type, fullDate, category, note, amount, title } = req.body;
-    // console.log('date', fullDate)
-    // console.log('urlImage', req.urlImage)
-
-    const fullDateArr = fullDate.split("-");
-    const year = fullDateArr[0];
-    const month = fullDateArr[1];
-    const date = fullDateArr[2].slice(0, 2);
     try {
+      const fullDateArr = fullDate.split("-");
+      const year = fullDateArr[0];
+      const month = fullDateArr[1];
+      const date = fullDateArr[2].substring(0, 2);
       const newData = await Transaction.create({
         UserId,
         type,
@@ -317,15 +313,19 @@ class TransactionController {
       });
       res.status(201).json(newData);
     } catch (error) {
-      // res.status(500).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
+
   static async putOne(req, res) {
-    // console.log(req.params, 'PARAMSS')
-    const TransactionId = +req.params.TransactionId;
-    // console.log(TransactionId, 'TRANSID')
-    const { type, fullDate, receiptImage, category, notes } = req.body;
-    const { amount, date, month, year } = +req.body;
+    const { TransactionId } = +req.params;
+    const { type, fulldate: fullDate, receiptImage, category, notes } = req.body;
+    const { amount } = +req.body;
+
+    const fullDateArr = fullDate.split("-");
+    const year = fullDateArr[0];
+    const month = fullDateArr[1];
+    const date = fullDateArr[2].substring(0, 2);
 
     try {
       const oldTransaction = await Transaction.findOne({
@@ -342,6 +342,7 @@ class TransactionController {
         userInstance.balance =
           userInstance.balance - Number(oldTransaction.amount) + amount;
       }
+      await userInstance.save();
 
       Transaction.update(
         {
@@ -361,13 +362,12 @@ class TransactionController {
         }
       );
 
-      await userInstance.save();
       await History.create({
         event: `A transaction with id ${TransactionId} has been updated and user ${UserId} balance has been updated`,
       });
       res.status(200).json({ status: "success" });
     } catch (error) {
-      // res.status(500).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
 
@@ -394,7 +394,7 @@ class TransactionController {
       });
       res.status(200).json({ status: "success" });
     } catch (error) {
-      // res.status(500).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
 
@@ -408,7 +408,7 @@ class TransactionController {
         return res.status(400).json({ message: "Transaction not found" });
       res.status(200).json(transactionInstance);
     } catch (error) {
-      // res.status(500).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
 }
