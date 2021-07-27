@@ -17,8 +17,8 @@ class OCRController {
         res.status(200).json(dataObj);
       })
       .catch((err) => {
-        console.error(err);
-        res.status(500).json({ message: "fail" });
+        // console.error(err);
+        // res.status(500).json({ message: "fail" });
       });
     // if (totalPrice) {
     // } else {
