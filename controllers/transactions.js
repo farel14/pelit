@@ -283,13 +283,15 @@ class TransactionController {
 
   static async postOne(req, res) {
     let UserId = req.params.UserId;
-    // console.log('DATE',req.body.fulldate)
-    let { type, fulldate:fullDate, category, note, amount, title } = req.body;
+    // console.log('USERID', UserId)
+    let { type, fullDate, category, note, amount, title } = req.body;
+    // console.log('date', fullDate)
+    // console.log('urlImage', req.urlImage)
 
     const fullDateArr = fullDate.split("-");
     const year = fullDateArr[0];
     const month = fullDateArr[1];
-    const date = fullDateArr[2].substring(0,2);
+    const date = fullDateArr[2].slice(0, 2);
     try {
       const newData = await Transaction.create({
         UserId,
@@ -314,14 +316,11 @@ class TransactionController {
     }
   }
   static async putOne(req, res) {
-    const { TransactionId } = +req.params;
-    const { type, fulldate:fullDate, receiptImage, category, notes } = req.body;
-    const { amount } = +req.body;
-
-    const fullDateArr = fullDate.split("-");
-    const year = fullDateArr[0];
-    const month = fullDateArr[1];
-    const date = fullDateArr[2].substring(0,2);
+    // console.log(req.params, 'PARAMSS')
+    const TransactionId = +req.params.TransactionId;
+    // console.log(TransactionId, 'TRANSID')
+    const { type, fullDate, receiptImage, category, notes } = req.body;
+    const { amount, date, month, year } = +req.body;
 
     try {
       const oldTransaction = await Transaction.findOne({
@@ -338,7 +337,6 @@ class TransactionController {
         userInstance.balance =
           userInstance.balance - Number(oldTransaction.amount) + amount;
       }
-      await userInstance.save();
 
       Transaction.update(
         {
@@ -358,6 +356,7 @@ class TransactionController {
         }
       );
 
+      await userInstance.save();
       await History.create({
         event: `A transaction with id ${TransactionId} has been updated and user ${UserId} balance has been updated`,
       });

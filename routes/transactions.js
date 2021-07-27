@@ -36,10 +36,12 @@ router.post(
   imageKit,
   Transaction.postOne
 );
-router.put("/:TransactionId",
-  upload.single("receiptImage"),
-  imageKit,
-  Transaction.putOne);
+router.put(
+  "/:TransactionId",
+  // upload.single("receiptImage"),
+  // imageKit,
+  Transaction.putOne
+);
 router.delete("/:TransactionId", Transaction.deleteOne);
 
 module.exports = router;
