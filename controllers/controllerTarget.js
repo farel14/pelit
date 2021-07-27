@@ -1,4 +1,5 @@
 const { Target, User } = require('../models')
+var cron = require('node-cron')
 
 class Controller {
     static getTargetByUser(req, res) {

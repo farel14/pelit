@@ -68,6 +68,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       photoProfile: DataTypes.STRING,
       balance: DataTypes.FLOAT,
+      pushToken: DataTypes.STRING
     },
     {
       sequelize,
