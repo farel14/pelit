@@ -9,7 +9,7 @@ class LoginController {
       where: {
         email,
       },
-      include: [Badge, Target, Transaction]
+      include: [Badge, Target, Transaction],
     })
       .then((user) => {
         if (user) {
@@ -18,31 +18,31 @@ class LoginController {
               id: user.id,
               email: user.id,
             });
-            let totalExpense = 0
-            let totalIncome = 0
-                for (let i = 0; i < user.Transactions.length; i++) {
-                    if (user.Transactions[i].type == 'Expense') {
-                        totalExpense += user.Transactions[i].amount
-                    } else {
-                        totalIncome += user.Transactions[i].amount
-                    }
-                }
+            let totalExpense = 0;
+            let totalIncome = 0;
+            for (let i = 0; i < user.Transactions.length; i++) {
+              if (user.Transactions[i].type == "Expense") {
+                totalExpense += user.Transactions[i].amount;
+              } else {
+                totalIncome += user.Transactions[i].amount;
+              }
+            }
             res.status(200).json({
               access_token,
               data: {
                 id: user.id,
                 email: user.email,
                 fullName: user.fullName,
-                firstName: user.fullName.split(' ')[0],
+                firstName: user.fullName.split(" ")[0],
                 photoProfile: user.photoProfile,
                 balance: user.balance,
                 Badges: user.Badges,
                 Targets: user.Targets,
                 Transactions: {
-                    totalExpense,
-                    totalIncome,
-                    data: user.Transactions
-                }
+                  totalExpense,
+                  totalIncome,
+                  data: user.Transactions,
+                },
               },
             });
           } else {
@@ -53,8 +53,7 @@ class LoginController {
         }
       })
       .catch((err) => {
-        console.log(err);
-        res.status(500).json({ message: "Internal Server Error" });
+        // res.status(500).json({ message: "Internal Server Error" });
       });
   }
 }
