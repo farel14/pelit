@@ -28,7 +28,7 @@ class TransactionController {
         res.status(200).json(data);
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -58,7 +58,7 @@ class TransactionController {
         res.status(200).json({ total, data });
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -139,7 +139,7 @@ class TransactionController {
         res.status(200).json(group);
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -211,7 +211,7 @@ class TransactionController {
         res.status(200).json(group);
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -245,7 +245,7 @@ class TransactionController {
         res.status(200).json({ total: output, data: allTransactions });
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -282,7 +282,7 @@ class TransactionController {
         res.status(200).json({ total: output, data: allTransactions });
       })
       .catch((err) => {
-        // res.status(500).json({ message: err });
+        res.status(500).json({ message: err });
       });
   }
 
@@ -315,7 +315,7 @@ class TransactionController {
       });
       res.status(201).json(newData);
     } catch (error) {
-      // res.status(500).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
   static async putOne(req, res) {
@@ -368,7 +368,7 @@ class TransactionController {
       });
       res.status(200).json({ status: "success" });
     } catch (error) {
-      // res.status(500).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
 
@@ -395,7 +395,7 @@ class TransactionController {
       });
       res.status(200).json({ status: "success" });
     } catch (error) {
-      // res.status(500).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
 
@@ -409,7 +409,7 @@ class TransactionController {
         return res.status(400).json({ message: "Transaction not found" });
       res.status(200).json(transactionInstance);
     } catch (error) {
-      // res.status(500).json({ message: error });
+      res.status(500).json({ message: error });
     }
   }
 }
