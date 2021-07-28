@@ -236,3 +236,21 @@ describe("PATCH /user/full-name/:userId [SUCCESS CASE]", () => {
       });
   });
 });
+
+describe("PATCH /user/pushtoken/:userId [SUCCESS CASE]", () => {
+  test("Shoud send a object with key: message and full name", (done) => {
+    request(app)
+      .patch(`/user/pushtoken/${user_id}`)
+      .send({
+        fullName: "abcasdas3432s",
+      })
+      .end((err, res) => {
+        if (err) done(err);
+        else {
+          expect(res.status).toBe(200);
+          expect(res.body).toHaveProperty("message", "Updated pushToken");
+          done();
+        }
+      });
+  });
+});
