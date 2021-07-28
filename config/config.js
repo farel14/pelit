@@ -23,6 +23,5 @@ module.exports = {
     host: process.env.RDS_HOSTNAME,
     port: process.env.RDS_PORT,
     dialect: "postgres",
-    logging: true,
   },
 };
