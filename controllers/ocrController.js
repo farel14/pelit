@@ -3,7 +3,7 @@ const tesseract = require("../OCR");
 class OCRController {
   static postOcr(req, res) {
     const imageUrl = req.file.buffer;
-    console.log("masuk controller", imageUrl);
+    // console.log("masuk controller", imageUrl);
     // const imageUrl = req.urlImage
     // const { imageUrl } = req.body
     // console.log(req.body)
@@ -13,7 +13,7 @@ class OCRController {
 
     tesseract(imageUrl)
       .then((dataObj) => {
-        console.log("masuk tesseract", dataObj);
+        // console.log("masuk tesseract", dataObj);
         res.status(200).json(dataObj);
       })
       .catch((err) => {

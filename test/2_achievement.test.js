@@ -16,6 +16,12 @@ let user = {
 
 let user_id;
 
+jest.mock("node-cron");
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 beforeAll((done) => {
   User.create({
     ...user,

@@ -11,6 +11,12 @@ let targets = [];
 let user_id;
 let transaction_id;
 
+jest.mock("node-cron");
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 beforeAll((done) => {
   User.create({
     ...user,
@@ -21,7 +27,7 @@ beforeAll((done) => {
     .then((user) => {
       user_id = user.id;
 
-      let allTrans = []
+      let allTrans = [];
 
       let trans = {};
       trans.UserId = user_id;
@@ -43,8 +49,8 @@ beforeAll((done) => {
       trans2.notes = "asdasdasd";
       trans2.title = "makan";
 
-      allTrans.push(trans)
-      allTrans.push(trans2)
+      allTrans.push(trans);
+      allTrans.push(trans2);
 
       return Transaction.bulkCreate(allTrans);
     })
@@ -74,7 +80,7 @@ beforeAll((done) => {
 
 if (process.env.NODE_ENV == "test") {
   afterAll((done) => {
-    User.destroy({ truncate : true, cascade: true })
+    User.destroy({ truncate: true, cascade: true })
       .then(() => {
         done();
       })
