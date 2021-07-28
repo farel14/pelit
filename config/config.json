@@ -3,14 +3,14 @@
     "username": "postgres",
     "password": "postgres",
     "database": "pelit-app",
-    "host": "127.0.0.1",
+    "host": "ec2-3-83-144-143.compute-1.amazonaws.com",
     "dialect": "postgres"
   },
   "test": {
     "username": "postgres",
     "password": "postgres",
     "database": "pelit_test",
-    "host": "127.0.0.1",
+    "host": "ec2-3-83-144-143.compute-1.amazonaws.com",
     "dialect": "postgres",
     "logging": false
   },
