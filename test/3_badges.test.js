@@ -4,44 +4,6 @@ const { User, Badge } = require('../models')
 let {randomDate, sqlDateFormat, thirtyDaysFromNow, randomIntFromInterval} = require('../helpers/dateParser.js')
 let formatter = require('../helpers/dateParser.js')
 
-let badgesId = []
-
-beforeAll(done => {
-    let newBadges = []
-
-    for (let i = 0; i < 5; i++) {
-        let badge = {}
-        badge.name = `Badge ${i}`
-        badge.description = `This is bagde ${i}`
-        badge.imgUrl = `ImageLink badge ${i}`
-
-        newBadges.push(badge)
-    }
-
-    Badge.bulkCreate(newBadges) // create badges
-    .then(badges => {    
-        for (let i = 0; i < badges.length; i++) {
-            badgesId.push(badges[i].id)
-        }
-        // console.log(badges, 'BADGES!')
-        done()
-    })
-    .catch(err => {
-        console.log('ERRRRRORRR CREATE BADGE')
-        done(err)
-    })
-})
-
-afterAll(done => {
-    Badge.destroy({ truncate: true, cascade: true})
-    .then(() => {
-        done()
-    })
-    .catch(err => {
-        done(err)
-    })
-})
-
 describe('Get Badges - SUCCESS', () => {
     test('Success get all badge', (done) => {
         request(app)
@@ -65,8 +27,7 @@ describe('Get Badges - SUCCESS', () => {
     })
 
     test('Success get badge by ID', (done) => {
-        let index = Math.floor(Math.random()*5)
-        let id = badgesId[index]
+        let id = 2
         request(app)
         .get(`/badge/${id}`)
         // .send(user)

@@ -68,12 +68,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       photoProfile: DataTypes.STRING,
       balance: DataTypes.FLOAT,
+      pushToken: DataTypes.STRING
     },
     {
       sequelize,
       modelName: "User",
     }
   );
+
   User.beforeCreate((user) => {
     user.password = passwordHash(user.password);
   });

@@ -8,6 +8,6 @@ router.patch('/status/:userId', Controller.editActiveTargetStatusByUser)
 
 router.get('/all/:userId', Controller.getTargetByUser)
 router.post('/all/:userId', Controller.addTargetByUser)
-router.delete('/all/:targetId', Controller.deleteTargetById)
+// router.delete('/all/:targetId', Controller.deleteTargetById)
 
 module.exports = router
