@@ -288,9 +288,9 @@ class TransactionController {
     // console.log('date', fullDate)
     // console.log('urlImage', req.urlImage)
     const fullDateArr = fullDate.split("-");
-    const date = fullDateArr[0];
+    const year = fullDateArr[0];
     const month = fullDateArr[1];
-    const year = fullDateArr[2].slice(0, 2);
+    const date = fullDateArr[2].slice(0, 2);
     try {
       const newData = await Transaction.create({
         UserId,
@@ -318,8 +318,13 @@ class TransactionController {
     // console.log(req.params, 'PARAMSS')
     const TransactionId = +req.params.TransactionId;
     // console.log(TransactionId, 'TRANSID')
-    const { type, fullDate, receiptImage, category, notes } = req.body;
-    const { amount, date, month, year } = +req.body;
+    let { type, fullDate, category, note, amount, title } = req.body;
+    // console.log('date', fullDate)
+    // console.log('urlImage', req.urlImage)
+    const fullDateArr = fullDate.split("-");
+    const year = fullDateArr[0];
+    const month = fullDateArr[1];
+    const date = fullDateArr[2].slice(0, 2);
 
     try {
       const oldTransaction = await Transaction.findOne({
@@ -342,11 +347,12 @@ class TransactionController {
           type,
           fullDate,
           date,
+          title,
           month,
           year,
           receiptImage,
           category,
-          notes,
+          note,
         },
         {
           where: {
