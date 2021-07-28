@@ -117,7 +117,7 @@ class Controller {
                                                 to: user.pushToken,
                                                 sound: 'default',
                                                 title: 'Pelit App',
-                                                body: 'You got a new badge! Check it out!'
+                                                body: `${user.fullName.split(' ')[0]}, You got a new badge! Check it out!`
                                             };
                                             expo.sendPushNotificationsAsync([message])
                                         }
