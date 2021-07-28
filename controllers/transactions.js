@@ -287,8 +287,6 @@ class TransactionController {
     let { type, fullDate, category, note, amount, title } = req.body;
     // console.log('date', fullDate)
     // console.log('urlImage', req.urlImage)
-    console.log('masuk controller', req.body)
-
     const fullDateArr = fullDate.split("-");
     const date = fullDateArr[0];
     const month = fullDateArr[1];

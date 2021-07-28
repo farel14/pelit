@@ -9,7 +9,7 @@ class OCRController {
     // console.log(req.body)
     // console.log('da IMAGE',imageUrl)
 
-    if (!imageUrl) return res.status(400).json({ message: "bad request" });
+    // if (!imageUrl) return res.status(400).json({ message: "bad request" });
 
     tesseract(imageUrl)
       .then((dataObj) => {
@@ -17,8 +17,8 @@ class OCRController {
         res.status(200).json(dataObj);
       })
       .catch((err) => {
-        console.error(err);
-        res.status(500).json({ message: "fail" });
+        // console.error(err);
+        // res.status(500).json({ message: "fail" });
       });
     // if (totalPrice) {
     // } else {
