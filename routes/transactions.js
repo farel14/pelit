@@ -39,8 +39,8 @@ router.post(
 );
 router.put(
   "/:TransactionId",
-  // upload.single("receiptImage"),
-  // imageKit,
+  upload.single("receiptImage"),
+  imageKit,
   Transaction.putOne
 );
 router.delete("/:TransactionId", Transaction.deleteOne);

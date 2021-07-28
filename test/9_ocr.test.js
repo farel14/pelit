@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../app");
 
-jest.setTimeout(30000);
+jest.setTimeout(50000);
 
 describe("POST /ocr [SUCCESS CASE]", () => {
   test("Shoud send a object with key: total, fullDate", (done) => {

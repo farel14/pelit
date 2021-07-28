@@ -12,11 +12,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-<<<<<<< HEAD
-    return queryInterface.removeColumn('Users', 'pushToken', Sequelize.STRING)
-=======
     return queryInterface.removeColumn("Users", "pushToken", Sequelize.STRING);
->>>>>>> 2b9e8a9359b211f6753b7d9893e6a710ad3bdbc8
     /**
      * Add reverting commands here.
      *

@@ -1,7 +1,7 @@
 const express = require ('express')
 const router = express.Router()
 const OCRController = require('../controllers/ocrController')
-const extendTimeoutMiddleware = require('../middlewares/extendTimeout')
+// const extendTimeoutMiddleware = require('../middlewares/extendTimeout')
 // const imageKit = require("../middlewares/imageKit");
 
 const multer = require("multer");
@@ -13,7 +13,7 @@ router.post(
     "/",
     upload.single("receiptImage"),
     // imageKit,
-    extendTimeoutMiddleware,
+    // extendTimeoutMiddleware,
     OCRController.postOcr
   );
 
