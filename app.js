@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/", router);
 
-autoAchievement();
+// autoAchievement();
 
 cron.schedule("0 */6 * * *", () => {
   autoAchievement();
