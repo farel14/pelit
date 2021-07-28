@@ -290,9 +290,9 @@ class TransactionController {
     console.log('masuk controller', req.body)
 
     const fullDateArr = fullDate.split("-");
-    const year = fullDateArr[0];
+    const date = fullDateArr[0];
     const month = fullDateArr[1];
-    const date = fullDateArr[2].slice(0, 2);
+    const year = fullDateArr[2].slice(0, 2);
     try {
       const newData = await Transaction.create({
         UserId,

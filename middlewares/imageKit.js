@@ -43,7 +43,7 @@ function imageKit(req, res, next) {
         next();
       })
       .catch((err) => {
-        // console.log(err, "ini error di image kit");
+        console.log("ini error di image kit");
         res.status(500).json({ message: "Error di imagekit" });
       });
     }
