@@ -16,9 +16,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/", router);
 
+// autoAchievement()
+
 cron.schedule('0 */6 * * *', () => {
   autoAchievement()
 })
+
+// cron.schedule('* * * * * *', () => {
+//   console.log('HAA')
+// })
 
 // cron.schedule('* * * * * *', () => {
 //   sendPushNotification("ExponentPushToken[lWVeNgF_A_VAyBqN2Tum6o]")

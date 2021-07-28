@@ -40,6 +40,7 @@ class Controller {
                   }]
             })
             .then(user => {
+                // console.log(user, 'USER')
                 for (let i = 0; i < user.length; i++) {
                     if (user[i].Targets[0].endDate < new Date()) {
                         users.push(user[i])
@@ -117,7 +118,7 @@ class Controller {
                                                 to: user.pushToken,
                                                 sound: 'default',
                                                 title: 'Pelit App',
-                                                body: 'You got a new badge! Check it out!'
+                                                body: `${user.fullName.split(' ')[0]}, You got a new badge! Check it out!`
                                             };
                                             expo.sendPushNotificationsAsync([message])
                                         }
@@ -129,10 +130,10 @@ class Controller {
                                             }
                                         })
                                     })
-                                    // if (i == achievements.length - 1) {
-                                    //     console.log('Success!')
-                                    //     console.log(newAchievements, 'SUCCESS')
-                                    // }
+                                    if (i == achievements.length - 1) {
+                                        console.log('Success!')
+                                        console.log(newAchievements, 'SUCCESS')
+                                    }
                                 })
                                 // .catch(err => {
                                 //     console.log(err, 'error')

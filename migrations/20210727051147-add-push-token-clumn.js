@@ -12,7 +12,7 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    return queryInterface.addColumn('Users', 'pushToken', Sequelize.STRING)
+    return queryInterface.removeColumn('Users', 'pushToken', Sequelize.STRING)
     /**
      * Add reverting commands here.
      *
