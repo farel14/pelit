@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --coverage --runInBand",
-    "dev": "nodemon bin/http",
+    "dev": "SET NODE_ENV=development&&nodemon bin/http",
     "start": "NODE_ENV=production node bin/http",
     "seeder": "SET NODE_ENV=development&&npx sequelize db:seed --seed",
     "sequelize": "SET NODE_ENV=development&&npx sequelize"

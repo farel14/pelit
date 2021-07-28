@@ -88,6 +88,8 @@ const main = (data) => {
     // !versi split
     if (!data) return { message: `Sorry we can't read your receipt` }
 
+    console.log(data)
+
     // ?Title
     let title
     detectedSource.forEach(ele => {
