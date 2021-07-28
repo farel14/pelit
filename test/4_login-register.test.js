@@ -1,10 +1,80 @@
 const request = require("supertest");
 const app = require("../app");
-const { User } = require("../models");
+const { User, Transaction } = require("../models");
+
+let user = {
+  email: "test@email.com",
+  password: "password123",
+};
+
+let targets = [];
+let user_id;
+let transaction_id;
+
+beforeAll((done) => {
+  User.create({
+    ...user,
+    fullName: "Test User",
+    photoProfile: "",
+    balance: 2000000,
+  }) // create user
+    .then((user) => {
+      user_id = user.id;
+
+      let allTrans = []
+
+      let trans = {};
+      trans.UserId = user_id;
+      trans.type = "Expense";
+      trans.amount = 300000;
+      trans.fullDate = "2021-07-23";
+      trans.receiptImage = "";
+      trans.category = "Transportation";
+      trans.notes = "asdasdasd";
+      trans.title = "makan";
+
+      let trans2 = {};
+      trans2.UserId = user_id;
+      trans2.type = "Income";
+      trans2.amount = 300000;
+      trans2.fullDate = "2021-07-23";
+      trans2.receiptImage = "";
+      trans2.category = "Other Income";
+      trans2.notes = "asdasdasd";
+      trans2.title = "makan";
+
+      allTrans.push(trans)
+      allTrans.push(trans2)
+
+      return Transaction.bulkCreate(allTrans);
+    })
+    .then((data) => {
+      transaction_id = data.id;
+
+      let trans = {};
+      trans.UserId = user_id;
+      trans.type = "Income";
+      trans.amount = -300000;
+      trans.fullDate = "2021-07-23";
+      trans.receiptImage = "";
+      trans.category = "Transportation";
+      trans.notes = "asdasdasd";
+      trans.title = "makan";
+
+      return Transaction.create(trans);
+    })
+    .then(() => {
+      done();
+    })
+    .catch((err) => {
+      // console.log('ERRRRRORRR CREATE USER')
+      done(err);
+    });
+});
 
 if (process.env.NODE_ENV == "test") {
   afterAll((done) => {
-    User.destroy({ truncate: { cascade: true } })
+    User.destroy({ truncate : true, cascade: true })
       .then(() => {
         done();
       })
@@ -193,8 +263,8 @@ describe("POST /login [SUCCESS CASE]", () => {
     request(app)
       .post("/login")
       .send({
-        email: "tesAja@mail.com",
-        password: "12345",
+        email: "test@email.com",
+        password: "password123",
       })
       .end((err, res) => {
         if (err) done(err);
@@ -229,7 +299,7 @@ describe("POST /login [ERROR CASE]", () => {
     request(app)
       .post("/login")
       .send({
-        email: "tesAja@mail.com",
+        email: "tesAjaaaa@mail.com",
         password: "123324",
       })
       .end((err, res) => {
