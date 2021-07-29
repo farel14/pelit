@@ -218,26 +218,21 @@ describe("Get Transaction - SUCCESS", () => {
   });
   test("Edit one", (done) => {
     let TransactionId = transaction_id;
-    let editData = {};
-    editData.type = "Expense";
-    editData.fullDate = "2021-07-28";
-    editData.receiptImage = "";
-    editData.category = "Food & Beverage";
-    editData.note = "TEST";
-    editData.title = "Ini title";
-    editData.amount = 800000;
-    editData.date = 28;
-    editData.month = 7;
-    editData.year = 2021;
 
     request(app)
       .put(`/transactions/${TransactionId}`)
-      .send(editData)
+      .field("UserId", user_id)
+      .field("type", "Expense")
+      .field("amount", -300000)
+      .field("fullDate", "2021-07-23")
+      .field("title", "makan")
+      .field("category", "Food & Beverage")
+      .field("notes", "asdasdasd")
+      .attach("receiptImage", "./image/contoh-resi-jnt-express.jpg")
       .end((err, res) => {
         if (err) {
           done(err);
         } else {
-          console.log(res.body, "ini res body put one");
           expect(res.status).toBe(200);
           expect(res.body).toHaveProperty("status", expect.any(String));
           done();
@@ -276,7 +271,6 @@ describe("Add Transaction - SUCCESS", () => {
     request(app)
       .post(`/transactions/${user_id}`)
       // .send(newTransaction)
-      .field("UserId", user_id)
       .field("type", "Expense")
       .field("amount", -300000)
       .field("fullDate", "2021-07-23")

@@ -318,8 +318,7 @@ class TransactionController {
     // console.log(req.params, 'PARAMSS')
     const TransactionId = +req.params.TransactionId;
     // console.log(TransactionId, 'TRANSID')
-    const { type, fullDate, receiptImage, category, notes } = req.body;
-    const { amount } = +req.body;
+    const { type, fullDate, category, note, amount, title } = req.body;
 
     const fullDateArr = fullDate.split("-");
     const year = fullDateArr[0];
@@ -327,30 +326,16 @@ class TransactionController {
     const date = fullDateArr[2].slice(0, 2);
 
     try {
-      const oldTransaction = await Transaction.findOne({
-        where: { id: TransactionId },
-      });
-      if (!oldTransaction)
-        return res.status(400).json({ message: "Transaction not found" });
-
-      const UserId = oldTransaction.UserId;
-      const userInstance = await User.findOne({ where: { id: UserId } });
-
-      if (amount) {
-        // ? update balance
-        userInstance.balance =
-          userInstance.balance - Number(oldTransaction.amount) + amount;
-      }
-
       Transaction.update(
         {
           type,
           fullDate,
           date,
           title,
+          amount: +amount,
           month,
           year,
-          receiptImage,
+          receiptImage: req.urlImage,
           category,
           note,
         },
@@ -360,13 +345,9 @@ class TransactionController {
           },
         }
       );
-
-      await userInstance.save();
-      await History.create({
-        event: `A transaction with id ${TransactionId} has been updated and user ${UserId} balance has been updated`,
-      });
       res.status(200).json({ status: "success" });
     } catch (error) {
+      console.log(error);
       // res.status(500).json({ message: error });
     }
   }

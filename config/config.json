@@ -1,27 +1,29 @@
-require("dotenv").config(); // this is important!
-module.exports = {
-  development: {
-    username: "postgres",
-    password: "postgres",
-    database: "pelit-app",
-    host: "127.0.0.1",
-    dialect: "postgres",
-    logging: false,
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "pelit-app",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
   },
-  test: {
-    username: "postgres",
-    password: "postgres",
-    database: "pelit-test",
-    host: "127.0.0.1",
-    dialect: "postgres",
-    logging: false,
+  "test": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "pelit_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "logging": false
   },
-  production: {
-    username: process.env.RDS_USERNAME,
-    password: process.env.RDS_PASSWORD,
-    database: process.env.RDS_DB_NAME,
-    host: process.env.RDS_HOSTNAME,
-    port: process.env.RDS_PORT,
-    dialect: "postgres",
-  },
-};
+  "production": {
+    "use_env_variable": "DATABASE_URL",
+    "ssl": true,
+    "dialect": "postgres",
+    "protocol": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}
