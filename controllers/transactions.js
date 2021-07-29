@@ -321,7 +321,12 @@ class TransactionController {
     const TransactionId = +req.params.TransactionId;
     // console.log(TransactionId, 'TRANSID')
     const { type, fullDate, receiptImage, category, notes } = req.body;
-    const { amount, date, month, year } = +req.body;
+    const { amount } = +req.body;
+
+    const fullDateArr = fullDate.split("-");
+    const year = fullDateArr[0];
+    const month = fullDateArr[1];
+    const date = fullDateArr[2].slice(0, 2);
 
     try {
       const oldTransaction = await Transaction.findOne({
