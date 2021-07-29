@@ -364,8 +364,12 @@ class TransactionController {
 
       // ? update balance
       const userInstance = await User.findOne({ where: { id: UserId } });
-      userInstance.balance += Number(transactionInstance.amount);
-      userInstance.save();
+      if (transactionInstance.type === 'Income') {
+        userInstance.balance += Number(transactionInstance.amount);
+      } else if (transactionInstance.type === 'Expense') {
+        userInstance.balance -= Number(transactionInstance.amount);
+      }
+      await userInstance.save();
 
       // ? deleting transaction
       transactionInstance.destroy();
