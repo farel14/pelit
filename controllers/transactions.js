@@ -347,7 +347,7 @@ class TransactionController {
       );
       res.status(200).json({ status: "success" });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       // res.status(500).json({ message: error });
     }
   }
@@ -364,9 +364,9 @@ class TransactionController {
 
       // ? update balance
       const userInstance = await User.findOne({ where: { id: UserId } });
-      if (transactionInstance.type === 'Income') {
+      if (transactionInstance.type === "Income") {
         userInstance.balance += Number(transactionInstance.amount);
-      } else if (transactionInstance.type === 'Expense') {
+      } else if (transactionInstance.type === "Expense") {
         userInstance.balance -= Number(transactionInstance.amount);
       }
       await userInstance.save();
