@@ -18,6 +18,12 @@ let user_id;
 let transaction_id;
 let transactions = [];
 
+jest.mock("node-cron");
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 beforeAll((done) => {
   User.create({
     ...user,
@@ -217,7 +223,8 @@ describe("Get Transaction - SUCCESS", () => {
     editData.fullDate = "2021-07-28";
     editData.receiptImage = "";
     editData.category = "Food & Beverage";
-    editData.notes = "TEST";
+    editData.note = "TEST";
+    editData.title = "Ini title";
     editData.amount = 800000;
     editData.date = 28;
     editData.month = 7;
@@ -230,6 +237,7 @@ describe("Get Transaction - SUCCESS", () => {
         if (err) {
           done(err);
         } else {
+          console.log(res.body, "ini res body put one");
           expect(res.status).toBe(200);
           expect(res.body).toHaveProperty("status", expect.any(String));
           done();

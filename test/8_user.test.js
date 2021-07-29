@@ -11,6 +11,12 @@ let targets = [];
 let user_id;
 let transaction_id;
 
+jest.mock("node-cron");
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 beforeAll((done) => {
   User.create({
     ...user,
