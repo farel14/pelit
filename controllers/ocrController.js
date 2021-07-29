@@ -14,7 +14,7 @@ class OCRController {
     tesseract(imageUrl)
       .then((dataObj) => {
         console.log("masuk tesseract", dataObj);
-        res.status(200).json(dataObj);
+        res.status(200).json({...dataObj});
       })
       .catch((err) => {
         console.error(err);
