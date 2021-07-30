@@ -282,12 +282,12 @@ class TransactionController {
   }
 
   static async postOne(req, res) {
-    let UserId = req.params.UserId;
+    const UserId = req.params.UserId;
     // console.log('USERID', UserId)
-    let { type, fullDate, category, note, amount, title } = req.body;
+    const { type, fullDate, category, note, amount, title } = req.body;
     // console.log('date', fullDate)
     // console.log('urlImage', req.urlImage)
-    console.log('masuk controller', req.body)
+    console.log('masuk controller', req.body, req.urlImage)
 
     const fullDateArr = fullDate.split("-");
     const year = fullDateArr[0];
@@ -298,7 +298,7 @@ class TransactionController {
         UserId,
         type,
         amount: +amount,
-        fullDate,
+        fullDate: new Date(fullDate),
         date,
         month,
         year,
@@ -313,7 +313,8 @@ class TransactionController {
       });
       res.status(201).json(newData);
     } catch (error) {
-      // res.status(500).json({ message: error });
+      console.log(error)
+      res.status(500).json({ message: error });
     }
   }
   static async putOne(req, res) {
