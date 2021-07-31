@@ -7,14 +7,18 @@ class OCRController {
     // const imageUrl = req.urlImage
     // const { imageUrl } = req.body
     // console.log(req.body)
-    // console.log('da IMAGE',imageUrl)
+    console.log('gambar di ocrController, BUFFER',imageUrl)
 
     if (!imageUrl) return res.status(400).json({ message: "bad request" });
 
     tesseract(imageUrl)
       .then((dataObj) => {
         console.log("masuk tesseract", dataObj);
-        res.status(200).json(dataObj);
+        if (dataObj) {
+          res.status(200).json({...dataObj});
+        } else {
+          res.status(200).json({})
+        }
       })
       .catch((err) => {
         console.error(err);
