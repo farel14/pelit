@@ -330,7 +330,8 @@ class TransactionController {
     const TransactionId = req.params.TransactionId;
     console.log(TransactionId);
     // console.log(TransactionId, 'TRANSID')
-    const { type, fullDate, receiptImage, category, note, amount } = req.body;
+    const { type, fullDate, receiptImage, category, note, amount, title } =
+      req.body;
 
     const fullDateArr = fullDate.split("-");
     const year = fullDateArr[0];
