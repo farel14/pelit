@@ -89,14 +89,14 @@ const main = (data) => {
 
   // ?Title
   let title;
-  // detectedSource.forEach((ele) => {
-  //   if (data.search(ele) >= 0) {
-  //     let foundWord = ele.source;
-  //     foundWord = foundWord.charAt(0).toUpperCase() + foundWord.slice(1);
-  //     // console.log(typeof ele)
-  //     return (title = `Purchasing items at ${foundWord}`);
-  //   }
-  // });
+  detectedSource.forEach((ele) => {
+    if (data.search(ele) >= 0) {
+      let foundWord = ele.source;
+      foundWord = foundWord.charAt(0).toUpperCase() + foundWord.slice(1);
+      // console.log(typeof ele)
+      return (title = `Purchasing items at ${foundWord}`);
+    }
+  });
 
   // ?Date
   let fullDate;
@@ -110,7 +110,8 @@ const main = (data) => {
     /(?:(?:31(\/|-|\.|\s)(?:0?[13578]|1[02]|(?:Jan|Mar|May|Jul|Aug|Oct|Dec)))\1|(?:(?:29|30)(\/|-|\.|\s)(?:0?[1,3-9]|1[0-2]|(?:Jan|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})|(?:29(\/|-|\.|\s)(?:0?2|(?:Feb))\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))|(?:0?[1-9]|1\d|2[0-8])(\/|-|\.|\s)(?:(?:0?[1-9]|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep))|(?:1[0-2]|(?:Oct|Nov|Dec)))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})/gi;
 
   // *dd-mm-yy, dd-mm-yy, dd-mm-yy, dd-mm-yy, or dd mm yy
-  // const reg3 = /[0-3][0-9][\/|-|\.|\s][0-3][0-9][\/|-|\.|\s][0-9][0-9]/g;
+  const reg3 = /[0-3][0-9][\.][0-3][0-9][\.][0-9][0-9]/g;
+  // const reg3 = /[0-3][0-9][\/|-|\.|\s][0-3][0-9][\/|-|\.|\s][0-9][0-9]/g
 
   if (data.match(reg)) {
     let foundMatch = data.match(reg)[0];
@@ -139,13 +140,15 @@ const main = (data) => {
       toNumeric.indexOf(foundMatch[1].toLowerCase()),
       foundMatch[0]
     );
+  } else if (data.match(reg3)) {
+    let foundMatch = data.match(reg3)[0];
+    foundMatch = foundMatch.split(/\/|\.|\s/g);
+    fullDate = new Date(
+      Number("20" + foundMatch[2]),
+      foundMatch[1] - 1,
+      foundMatch[0]
+    );
   }
-  // else if (data.match(reg3)) {
-  //   console.log(data, "ini data 3");
-  //   let foundMatch = data.match(reg3)[0];
-  //   foundMatch = foundMatch.split(/\/|\.|\s/g);
-  //   fullDate = new Date("20" + foundMatch[2], foundMatch[1] - 1, foundMatch[0]);
-  // }
 
   // ?Total
   const totalPriceArr = data.split("\n");
@@ -156,11 +159,11 @@ const main = (data) => {
   const totalPriceNumber = Number(Math.abs(totalPriceStr.replace(",", "")));
   // console.log(totalPriceObj)
 
-  // console.log({
-  //     title,
-  //     total: totalPriceNumber,
-  //     fullDate
-  // })
+  console.log({
+    title,
+    total: totalPriceNumber,
+    fullDate,
+  });
   return {
     title,
     total: totalPriceNumber,
