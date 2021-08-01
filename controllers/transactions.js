@@ -366,9 +366,11 @@ class TransactionController {
           type,
           fullDate,
           date,
+          title,
+          amount: +amount,
           month,
           year,
-          receiptImage,
+          receiptImage: req.urlImage,
           category,
           note,
           amount: +amount,
@@ -379,11 +381,6 @@ class TransactionController {
           },
         }
       );
-
-      await userInstance.save();
-      await History.create({
-        event: `A transaction with id ${TransactionId} has been updated and user ${UserId} balance has been updated`,
-      });
       res.status(200).json({ status: "success" });
     } catch (error) {
       console.log(error);

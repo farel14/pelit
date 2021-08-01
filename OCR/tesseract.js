@@ -2,6 +2,7 @@ const { createWorker } = require("tesseract.js");
 module.exports = (receiptImageUrl) => {
   const innerFunction = (async () => {
     try {
+      // console.log("di tesseractjs di folder OCR", receiptImageUrl);
       const worker = createWorker();
       await worker.load();
       await worker.loadLanguage("eng");
@@ -10,6 +11,8 @@ module.exports = (receiptImageUrl) => {
         data: { text },
       } = await worker.recognize(receiptImageUrl);
       await worker.terminate();
+
+      // console.log(text, 'hasil')
 
       return text;
     } catch (error) {
