@@ -360,6 +360,7 @@ class TransactionController {
             userInstance.balance + oldTransaction.amount - Number(amount);
         }
       }
+      await userInstance.save();
       console.log(userInstance);
 
       await Transaction.update(
