@@ -282,23 +282,21 @@ class TransactionController {
   }
 
   static async postOne(req, res) {
-    let UserId = req.params.UserId;
+    const UserId = +req.params.UserId;
     // console.log('USERID', UserId)
-    let { type, fullDate, category, note, amount, title } = req.body;
+    const { type, fullDate, category, note, amount, title } = req.body;
     // console.log('date', fullDate)
     // console.log('urlImage', req.urlImage)
-    console.log('masuk controller', req.body)
-
     const fullDateArr = fullDate.split("-");
-    const date = fullDateArr[0];
+    const year = fullDateArr[0];
     const month = fullDateArr[1];
-    const year = fullDateArr[2].slice(0, 2);
+    const date = fullDateArr[2].slice(0, 2);
     try {
       const newData = await Transaction.create({
         UserId,
         type,
         amount: +amount,
-        fullDate,
+        fullDate: new Date(fullDate),
         date,
         month,
         year,
@@ -308,25 +306,44 @@ class TransactionController {
         title,
       });
 
+      const userInstance = await User.findOne({ where: { id: UserId } });
+      if (type === "Income") {
+        userInstance.balance += Number(amount);
+      } else if (type === "Expense") {
+        userInstance.balance -= Number(amount);
+      }
+      await userInstance.save();
+
+      res.status(200).json({ status: "success" });
+
       await History.create({
         event: `A transaction with id ${newData.id} has been created and user ${UserId} balance has been updated`,
       });
       res.status(201).json(newData);
     } catch (error) {
-      // res.status(500).json({ message: error });
+      console.log(error);
+      res.status(500).json({ message: error });
     }
   }
   static async putOne(req, res) {
     // console.log(req.params, 'PARAMSS')
-    const TransactionId = +req.params.TransactionId;
+    const TransactionId = req.params.TransactionId;
+    console.log(TransactionId);
     // console.log(TransactionId, 'TRANSID')
-    const { type, fullDate, receiptImage, category, notes } = req.body;
-    const { amount, date, month, year } = +req.body;
+    const { type, fullDate, receiptImage, category, note, amount, title } =
+      req.body;
+
+    const fullDateArr = fullDate.split("-");
+    const year = fullDateArr[0];
+    const month = fullDateArr[1];
+    const date = fullDateArr[2].slice(0, 2);
 
     try {
       const oldTransaction = await Transaction.findOne({
         where: { id: TransactionId },
       });
+
+      console.log(oldTransaction);
       if (!oldTransaction)
         return res.status(400).json({ message: "Transaction not found" });
 
@@ -335,20 +352,30 @@ class TransactionController {
 
       if (amount) {
         // ? update balance
-        userInstance.balance =
-          userInstance.balance - Number(oldTransaction.amount) + amount;
+        if (type === "Income") {
+          userInstance.balance =
+            userInstance.balance - oldTransaction.amount + Number(amount);
+        } else {
+          userInstance.balance =
+            userInstance.balance + oldTransaction.amount - Number(amount);
+        }
       }
+      await userInstance.save();
+      console.log(userInstance);
 
-      Transaction.update(
+      await Transaction.update(
         {
           type,
           fullDate,
           date,
+          title,
+          amount: +amount,
           month,
           year,
-          receiptImage,
+          receiptImage: req.urlImage,
           category,
-          notes,
+          note,
+          amount: +amount,
         },
         {
           where: {
@@ -356,13 +383,9 @@ class TransactionController {
           },
         }
       );
-
-      await userInstance.save();
-      await History.create({
-        event: `A transaction with id ${TransactionId} has been updated and user ${UserId} balance has been updated`,
-      });
       res.status(200).json({ status: "success" });
     } catch (error) {
+      console.log(error);
       // res.status(500).json({ message: error });
     }
   }
@@ -379,8 +402,12 @@ class TransactionController {
 
       // ? update balance
       const userInstance = await User.findOne({ where: { id: UserId } });
-      userInstance.balance += Number(transactionInstance.amount);
-      userInstance.save();
+      if (transactionInstance.type === "Income") {
+        userInstance.balance -= Number(transactionInstance.amount);
+      } else if (transactionInstance.type === "Expense") {
+        userInstance.balance += Number(transactionInstance.amount);
+      }
+      await userInstance.save();
 
       // ? deleting transaction
       transactionInstance.destroy();

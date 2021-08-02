@@ -18,6 +18,12 @@ let user_id;
 let transaction_id;
 let transactions = [];
 
+jest.mock("node-cron");
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 beforeAll((done) => {
   User.create({
     ...user,
@@ -212,20 +218,17 @@ describe("Get Transaction - SUCCESS", () => {
   });
   test("Edit one", (done) => {
     let TransactionId = transaction_id;
-    let editData = {};
-    editData.type = "Expense";
-    editData.fullDate = "2021-07-28";
-    editData.receiptImage = "";
-    editData.category = "Food & Beverage";
-    editData.notes = "TEST";
-    editData.amount = 800000;
-    editData.date = 28;
-    editData.month = 7;
-    editData.year = 2021;
 
     request(app)
       .put(`/transactions/${TransactionId}`)
-      .send(editData)
+      .field("UserId", user_id)
+      .field("type", "Expense")
+      .field("amount", -300000)
+      .field("fullDate", "2021-07-23")
+      .field("title", "makan")
+      .field("category", "Food & Beverage")
+      .field("notes", "asdasdasd")
+      .attach("receiptImage", "./image/contoh-resi-jnt-express.jpg")
       .end((err, res) => {
         if (err) {
           done(err);
@@ -268,7 +271,6 @@ describe("Add Transaction - SUCCESS", () => {
     request(app)
       .post(`/transactions/${user_id}`)
       // .send(newTransaction)
-      .field("UserId", user_id)
       .field("type", "Expense")
       .field("amount", -300000)
       .field("fullDate", "2021-07-23")

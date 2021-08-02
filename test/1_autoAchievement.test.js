@@ -16,6 +16,7 @@ let formatter = require("../helpers/dateParser.js");
 const { autoAchievement } = require("../controllers/controllerAchievement");
 const Controller = require("../controllers/controllerAchievement");
 // const {jest} = require ('@jest/globals')
+
 const consoleSpy = jest.spyOn(console, "log").mockImplementation();
 const log = console.log;
 let user = {
@@ -26,6 +27,13 @@ let user = {
 let user_id;
 let pushToken;
 let targets = [];
+
+// jest.mock("node-cron");
+
+beforeEach(() => {
+  // jest.clearAllMocks();
+  jest.setTimeout(30000);
+});
 
 beforeAll((done) => {
   User.create({

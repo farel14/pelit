@@ -1,4 +1,4 @@
-const tesseract = require('./tesseract')
+const tesseract = require("./tesseract");
 
 const dummy = `NGADIR0JO - WONOGIRI 02735327200
 JL. NGADIROJO KENTENG RT. 01, RW. 03, NGAD
@@ -17,15 +17,15 @@ TUNAI : 57,000
 ANDA HEMAT : 9,000
 PPN : DPP= 60,000 PPN=_{;,000
 LAYANAN KONSUMEN SMS 0811 1500 280
-CALL 1500 280 - KONTAK@INDOMARET.CO.ID`
+CALL 1500 280 - KONTAK@INDOMARET.CO.ID`;
 
 const detectedSource = [
-    /indomaret/i,
-    /alfamart/i,
-    /transmart/i,
-    /ikea/i,
-    /lottemart/i
-]
+  /indomaret/i,
+  /alfamart/i,
+  /transmart/i,
+  /ikea/i,
+  /lottemart/i,
+];
 
 // *indomaret
 // const url = 'https://pbs.twimg.com/media/EdS8xTIUEAAG-zn.jpg'
@@ -33,7 +33,7 @@ const detectedSource = [
 // const url = 'https://i.imgur.com/ncYqNfe.png'
 // *alfamart 2 #fail
 // const url = 'https://cdn-2.tstatic.net/makassar/foto/bank/images/ua-alfa.jpg'
-// *btdelivery 
+// *btdelivery
 // const url = 'https://passingthroughresearcher.files.wordpress.com/2019/06/img_20190511_084303.jpg?w=546&h=510&crop=1'
 // *cafe
 // const url = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/ReceiptSwiss.jpg/1200px-ReceiptSwiss.jpg'
@@ -52,58 +52,60 @@ const detectedSource = [
 // *IKEA indonesia #4 fail
 // const url = 'https://media-cdn.tripadvisor.com/media/photo-s/08/ac/5f/08/ikea-alam-sutera.jpg'
 
-
-
 // ! parser function
 const sandbox = (data) => {
-    // tesseract(url)
-    // .then(data => {
-    // !versi split
-    if (!data) return console.log(`Sorry we can't read your receipt`)
-    console.log(data)
+  // tesseract(url)
+  // .then(data => {
+  // !versi split
+  if (!data) return console.log(`Sorry we can't read your receipt`);
+  // console.log(data)
 
-    // ?Title
-    let title
-    detectedSource.forEach(ele => {
-        data.search(ele) >= 0 ? title = `Shop at ${ele}` : ''
-    })
-    
-    // ?Date
-    let fullDate
+  // ?Title
+  let title;
+  detectedSource.forEach((ele) => {
+    data.search(ele) >= 0 ? (title = `Shop at ${ele}`) : "";
+  });
 
-    // *dd/mm/yyyy, dd-mm-yyyy, dd.mm.yyyy or dd mm yyyy
-    const reg = /^(?:(?:31(\/|-|\.|\s)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.|\s)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.|\s)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.|\s)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$|/
-    
-    // *dd-mmm-YYYY, dd/mmm/YYYY, dd.mmm.YYYY or dd mmm YYYY
-    const reg2=/^(?:(?:31(\/|-|\.|\s)(?:0?[13578]|1[02]|(?:Jan|Mar|May|Jul|Aug|Oct|Dec)))\1|(?:(?:29|30)(\/|-|\.|\s)(?:0?[1,3-9]|1[0-2]|(?:Jan|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.|\s)(?:0?2|(?:Feb))\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.|\s)(?:(?:0?[1-9]|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep))|(?:1[0-2]|(?:Oct|Nov|Dec)))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/
-    // *dd-mm-yy, dd-mm-yy, dd-mm-yy, dd-mm-yy, or dd mm yy
-    const reg3 = /[0-3][0-9][\/|-|\.|\s][0-3][0-9][\/|-|\.|\s][0-9][0-9]/
+  // ?Date
+  let fullDate;
 
-    if (data.match(reg)) {
-        fullDate = new Date(data.match(reg)[0])
-    } else if(data.match(reg2)) {
-        fullDate = new Date(data.match(reg2)[0])
-    } else if(data.match(reg3)) {
-        fullDate = new Date(data.match(reg3)[0])
-    }
+  // *dd/mm/yyyy, dd-mm-yyyy, dd.mm.yyyy or dd mm yyyy
+  const reg =
+    /^(?:(?:31(\/|-|\.|\s)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.|\s)(?:0?[13-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.|\s)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.|\s)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$|/;
 
-    // console.log(data.match(reg)? data.match(reg)[0] : '')
+  // *dd-mmm-YYYY, dd/mmm/YYYY, dd.mmm.YYYY or dd mmm YYYY
+  const reg2 =
+    /^(?:(?:31(\/|-|\.|\s)(?:0?[13578]|1[02]|(?:Jan|Mar|May|Jul|Aug|Oct|Dec)))\1|(?:(?:29|30)(\/|-|\.|\s)(?:0?[1,3-9]|1[0-2]|(?:Jan|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec))\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.|\s)(?:0?2|(?:Feb))\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.|\s)(?:(?:0?[1-9]|(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep))|(?:1[0-2]|(?:Oct|Nov|Dec)))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/;
+  // *dd-mm-yy, dd-mm-yy, dd-mm-yy, dd-mm-yy, or dd mm yy
+  const reg3 = /[0-3][0-9][\/|-|\.|\s][0-3][0-9][\/|-|\.|\s][0-9][0-9]/;
 
-    // ?Total
-    const totalPriceArr = data.split('\n')
-    let totalPriceStr = totalPriceArr.filter(ele => ele.search(/total/i) >= 0)[0]
-    totalPriceStr = totalPriceStr.split(' ')[totalPriceStr.split(' ').length - 1]
-    const totalPriceNumber = Number(Math.abs(totalPriceStr.replace(',', '')))
-    // console.log(totalPriceObj)
+  if (data.match(reg)) {
+    fullDate = new Date(data.match(reg)[0]);
+  } else if (data.match(reg2)) {
+    fullDate = new Date(data.match(reg2)[0]);
+  } else if (data.match(reg3)) {
+    fullDate = new Date(data.match(reg3)[0]);
+  }
 
-    return {
-        title,
-        total: totalPriceNumber,
-        fullDate
-    }
+  // console.log(data.match(reg)? data.match(reg)[0] : '')
 
-    // })
-    // .catch(err => console.error(err))
-}
+  // ?Total
+  const totalPriceArr = data.split("\n");
+  let totalPriceStr = totalPriceArr.filter(
+    (ele) => ele.search(/total/i) >= 0
+  )[0];
+  totalPriceStr = totalPriceStr.split(" ")[totalPriceStr.split(" ").length - 1];
+  const totalPriceNumber = Number(Math.abs(totalPriceStr.replace(",", "")));
+  // console.log(totalPriceObj)
 
-console.log(sandbox(dummy))
+  return {
+    title,
+    total: totalPriceNumber,
+    fullDate,
+  };
+
+  // })
+  // .catch(err => console.error(err))
+};
+
+// console.log(sandbox(dummy));
